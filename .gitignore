@@ -83,12 +83,16 @@ celerybeat-schedule
 
 # Environments
 .env
+.env.local
+.env.*.local
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+*.env
+!.env.example
 
 # Spyder project settings
 .spyderproject
@@ -102,3 +106,14 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
