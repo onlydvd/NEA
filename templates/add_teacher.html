@@ -1,0 +1,174 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Teachers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_teacher.css') }}">
+{% endblock %}
+
+{% block body %}
+    <script src="{{ url_for('static', filename='add_teacher.js') }}"></script>
+    <div class="menu-bar">
+        <div class="back">
+            <a href="{{ url_for('teachers') }}">Back </a>
+        </div>
+    </div>
+
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flashes">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+
+
+    <form id="teacherForm" method="POST" action="{{ url_for('add_teacher') }}">
+        <h1>Add New Teacher</h1>
+
+    
+        <div class="tab">
+            <h2>Teacher Info:</h2>
+
+            <div class="input-container">
+                <input type="text" id="firstname" name="firstname" required>
+                <label for="firstname">First Name:</label><br>
+            </div>
+
+            <div class="input-container">
+                <input type="text" id="surname" name="surname" required>
+                <label for="surname">Surname:</label><br>
+            </div>
+            <br><br>
+            <div class="gender-options">Gender:
+                <input type="radio" id="male" name="gender" value="M" required>
+                <label for="male">Male</label>
+
+                <input type="radio" id="female" name="gender" value="F" required>
+                <label for="female">Female</label>
+            </div>
+            <br><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            {% if teachers %}
+                {% for teacher in teachers %}
+                    {% if email == teacher[0] %}
+                        <p style="color:red;">Error: Email already exists.</p>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <div class="subjects">Subject:
+
+                <input type="radio" id="Maths" name="subject" value=1 required>
+                <label for="Maths">Maths</label>
+
+                <input type="radio" id="English" name="subject" value=2 required>
+                <label for="English">English</label>
+
+                <input type="radio" id="Science" name="subject" value=3 required>
+                <label for="Science">Science</label>
+
+                <input type="radio" id="Computing" name="subject" value=4 required>
+                <label for="Computing">Computing</label>
+
+                <input type="radio" id="History" name="subject" value=5 required>
+                <label for="History">History</label>
+            </div>
+            <br><br><br><br>
+
+
+        </div>
+        <div class="tab">
+            <legend>Additional Info:</legend>
+            
+            <div class="mastery">Mastery: <br>
+
+
+                <input type="radio" id="stem" name="mastery" value=1 required>
+                <label for="stem">STEM</label>
+
+                <input type="radio" id="finance" name="mastery" value=2 required>
+                <label for="finance">Finance</label>
+
+                <input type="radio" id="arts" name="mastery" value=3 required>
+                <label for="arts">Arts</label>
+
+                <input type="radio" id="law" name="mastery" value=4 required>
+                <label for="law">Law</label><br><br>
+
+                <input type="radio" id="fmedo" name="mastery" value=5 required>
+                <label for="fmedo">12Med1</label>
+
+                <input type="radio" id="fmedt" name="mastery" value=6 required>
+                <label for="fmedt">12Med2</label>
+
+                <input type="radio" id="smedo" name="mastery" value=7 required>
+                <label for="smedo">13Med1</label>
+
+                <input type="radio" id="smedt" name="mastery" value=8 required>
+                <label for="smedt">13Med2</label><br><br>
+
+                <input type="radio" id="none" name="mastery" value=None required>
+                <label for="none">None</label>
+            </div>
+
+
+            <br><br>
+            <label for="personal_email">Personal Email:</label>
+            <input type="email" id="personal_email" name="personal_email" required><br><br>
+
+            <label for="phonenumber">Phone Number:</label>
+            <input type="tel" id="phonenumber" name="phonenumber" required><br><br>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required><br><br>
+
+            <label for="qualifications">Qualifications:</label>
+            <input type="text" id="qualifications" name="qualifications" required><br><br>
+
+            <label for="Emergency_contact">Emergency_contact:</label>
+            <input type="text" id="Emergency_contact" name="Emergency_contact" required><br><br>
+
+            
+        </div>
+
+        <div class="tab">
+            <legend>Address Info:</legend>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required><br><br>
+
+            <label for="employment_start">Employment Start Date:</label>
+            <input type="date" id="employment_start" name="employment_start"><br><br>
+        </div>
+        
+        <div style="overflow:auto;">
+            <div style="float:right;">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            </div>
+        </div>
+
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;margin-top:40px;">
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        </div>
+
+
+
+        <br><br>
+        <button type="submit">Add Teacher</button><br><br><br>
+    </form>
+    <script src="{{ url_for('static', filename='add_teacher.js') }}"></script>
+{% endblock %}
+
+
+

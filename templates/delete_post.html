@@ -1,0 +1,50 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - View Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='delete_post.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="delete_post">
+        <div class="back">
+            <a href="#" onclick="history.back()">Back</a>
+        </div>
+        <h1>Delete Post</h1>
+        
+        <form method="POST" action="{{ url_for('delete_post', board=board) }}">
+            <label for="post_id">Select Post to Delete:</label>
+            <select name="post_id" id="post_id" required>
+                {% for post in myposts %}
+                    <option value="{{ post[0] }}">{{ post[1] }}</option>
+                {% else %}
+                    <option disabled>No posts available</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Delete Post</button>
+        </form>
+        
+    </section>
+
+    <section class="post-detail">
+        {% for post in myposts %}
+            <a href="{{ url_for('view_post', board=board, post_id=post[0]) }}">
+                <article class="post">
+                    <h2>{{ post[1] }}</h2>
+                    <p>{{ post[2] }}</p>
+                    {% for teacher in teachers %}
+                        {% if post[7] == teacher[0] %}
+                            <p><strong>Posted by:</strong> {{ teacher[1] }} {{ teacher[2] }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    <p><strong>Date:</strong> {{ post[3] }} <strong>Time:</strong> {{ post[4] }}</p>
+                    {% if post[6] %}
+                        <p><strong>Attachments:</strong> {{ post[5] }}</p>
+                    {% endif %}
+                </article>
+            </a>
+        {% else %}
+            <p>No posts available.</p>
+        {% endfor %}
+    </section>
+{% endblock %}

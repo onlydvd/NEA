@@ -1,0 +1,57 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Map Headers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='map_headers.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block body %}
+
+<!-- Page Content Wrapper (centering happens here) -->
+
+<div class="menu-bar">
+    <div class="back">
+        <a href="{{ url_for('import_students') }}">Back</a>
+    </div>
+    <h1>Map CSV Columns</h1>
+</div>
+
+
+<div class="mapping-page">
+
+
+    <p class="mapping-desc">Please map each uploaded column to a system field.</p>
+
+    <form method="POST" class="mapping-form">
+        <table class="mapping-table">
+            <thead>
+                <tr>
+                    <th>Uploaded Column</th>
+                    <th>Map To</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for header in uploaded_headers %}
+                <tr>
+                    <td class="uploaded-col">{{ header }}</td>
+                    <td>
+                        <select name="{{ header }}" class="mapping-select">
+                            <option value="">Ignore</option>
+                            {% for field in system_fields %}
+                            <option value="{{ field }}">{{ field }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="mapping-btn">Confirm Mapping</button>
+    </form>
+<br><br><br>
+</div>
+
+{% endblock %}

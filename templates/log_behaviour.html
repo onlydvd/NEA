@@ -1,0 +1,143 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Log Behaviour</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='log_behaviour.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="menu-bar">
+        <div class="back">
+            <a href="#" onclick="history.back()">Back</a>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="card">
+            <h1 class="page-title">Log Behaviour for {{ student[1] }} {{ student[2] }}</h1>
+            
+            <form method="POST" action="{{ url_for('log_behaviour', student_id=student_id) }}" class="behaviour-form">
+                
+                <!-- Behaviour Type Selection -->
+                <div class="form-group">
+                    <label for="typeid">Behaviour Type:</label>
+                    <select id="typeid" name="typeid" required onchange="updateAmountConstraints()">
+                        {% for behaviour_type in behaviour_types %}
+                            <option value="{{ behaviour_type[0] }}" data-type-name="{{ behaviour_type[1] }}">
+                                {{ behaviour_type[1] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <small class="form-hint" id="typeHint"></small>
+                </div>
+
+                <!-- Amount Input -->
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <div class="amount-wrapper">
+                        <input type="number" id="amount" name="amount" min="1" value="1" required>
+                        <small class="form-hint" id="amountHint"></small>
+                    </div>
+                </div>
+
+                <!-- Description Selection -->
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <select id="description" name="description" required>
+                        <option value="Class engagement">Class engagement</option>
+                        <option value="Helping others">Helping others</option>
+                        <option value="Excellent work">Excellent work</option>
+                        <option value="No class engagement">No class engagement</option>
+                        <option value="Incomplete homework">Incomplete homework</option>
+                        <option value="Late to class">Late to class</option>
+                        <option value="Rude behaviour to teacher">Rude behaviour to teacher</option>
+                        <option value="Disruptive behaviour">Disruptive behaviour</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Log Behaviour</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Map behaviour type IDs to constraints
+        const typeConstraints = {
+            '1': { name: 'Housepoint', maxAmount: null, disabled: false, hint: 'No limit (positive numbers only)' },      // Housepoint
+            '2': { name: 'Demerit', maxAmount: null, disabled: false, hint: 'No limit (positive numbers only)' },          // Demerit
+            '3': { name: 'Detention', maxAmount: 2, disabled: false, hint: 'Maximum 2 detentions can be set' },             // Detention
+            '4': { name: 'Withdrawal', maxAmount: 1, disabled: true, hint: 'Amount is automatically set to 1' }             // Withdrawal
+        };
+
+        function updateAmountConstraints() {
+            const typeSelect = document.getElementById('typeid');
+            const amountInput = document.getElementById('amount');
+            const amountHint = document.getElementById('amountHint');
+            const typeHint = document.getElementById('typeHint');
+            const selectedValue = typeSelect.value;
+
+            if (!selectedValue || !typeConstraints[selectedValue]) {
+                amountInput.disabled = false;
+                amountInput.max = '';
+                amountInput.min = '1';
+                amountInput.value = '1';
+                amountHint.textContent = '';
+                typeHint.textContent = '';
+                return;
+            }
+
+            const constraint = typeConstraints[selectedValue];
+            
+            // Update type hint
+            typeHint.textContent = constraint.hint;
+            
+            // Set amount input constraints
+            amountInput.disabled = constraint.disabled;
+            amountInput.value = '1';
+            amountInput.min = '1';
+
+            if (constraint.maxAmount) {
+                amountInput.max = constraint.maxAmount;
+                amountHint.textContent = `Max: ${constraint.maxAmount}`;
+            } else {
+                amountInput.max = '';
+                amountHint.textContent = 'Positive numbers only';
+            }
+
+            // Show disabled state visually
+            if (constraint.disabled) {
+                amountInput.classList.add('disabled-input');
+            } else {
+                amountInput.classList.remove('disabled-input');
+            }
+        }
+
+        // Validate amount on input
+        document.getElementById('amount').addEventListener('input', function() {
+            const typeSelect = document.getElementById('typeid');
+            const selectedValue = typeSelect.value;
+            
+            if (!selectedValue || !typeConstraints[selectedValue]) return;
+            
+            const constraint = typeConstraints[selectedValue];
+            let value = parseInt(this.value) || 0;
+
+            // Ensure positive number
+            if (value < 1) {
+                this.value = '1';
+            }
+            
+            // Apply max constraint if it exists
+            if (constraint.maxAmount && value > constraint.maxAmount) {
+                this.value = constraint.maxAmount;
+            }
+        });
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            updateAmountConstraints();
+        });
+    </script>
+{% endblock %}

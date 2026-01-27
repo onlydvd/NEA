@@ -1,0 +1,71 @@
+.center {
+    text-align: center;
+}
+
+.actions-row {
+    display: flex;
+    justify-content: center;   /* centers buttons */
+    gap: 16px;
+    margin: 25px 0;
+}
+
+
+.btn {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-grey {
+    background: #6b6b6b;
+    color: white;
+}
+
+.btn-grey:hover {
+    background: #2f7d32; /* green hover */
+}
+
+.btn-danger {
+    background: #9b2c2c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+.confirm-box {
+    padding: 10px 20px;
+}
+
+.warning {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 12px;
+    border-radius: 4px;
+    margin: 10px 20px 20px;
+}
+
+.flash-wrap {
+    padding: 0 20px;
+}
+
+.flash {
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.flash.success {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.flash.error {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+}

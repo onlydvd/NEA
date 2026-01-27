@@ -1,0 +1,45 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studsight - View Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='view_post.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="post-detail">
+        <div class="back">
+            <a href="#" onclick="history.back()">Back</a>
+        </div>
+        <div class="container">
+            <h2>{{ post[1] }}</h3>
+            <p><strong>Date:</strong> {{ post[3] }} <strong>Time:</strong> {{ post[4] }}</p>
+            {% if post[5] %}
+                <div class="attachment-section">
+                    <p><strong>Attachments:</strong></p>
+                    <img id="attachment-image" src="{{ url_for('get_attachment', board=board, post_id=post[0]) }}" alt="Post attachment" style="max-width: 100%; height: auto;">
+                </div>
+            {% endif %}
+            <br><br>
+            <h1><p>{{ post[2] }}</p></h1><br>
+        </div>
+        
+        
+    </section>
+{% endblock %}
+
+<!-- <section class="comments-section">
+        <h2>Comments</h2>
+        {% for comment in comments %}
+            <div class="comment">
+                <p>{{ comment[1] }}</p> 
+                <p><strong>Date:</strong> {{ comment[2] }} <strong>Time:</strong> {{ comment[3] }}</p>
+            </div>
+        {% else %}
+            <p>No comments yet.</p>
+        {% endfor %}
+        <form method="POST" action="{{ url_for('add_comment', post_id=post[0]) }}">
+            <textarea name="comment_text" placeholder="Add a comment..." required></textarea>
+            <button type="submit">Submit Comment</button>
+        </form>
+    </section> -->

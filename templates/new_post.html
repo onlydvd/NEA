@@ -1,0 +1,47 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - New Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='new_post.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<section class="new-post-form">
+    <div class="back">
+        <a href="#" onclick="history.back()">Back</a>
+    </div><br><br>
+
+    <h1>Create New {{ board|title }} Post</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for category, msg in messages %}
+            <p class="flash {{ category }}">{{ msg }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('new_post', board=board) }}" enctype="multipart/form-data">
+
+        <textarea id="title" name="title" placeholder="Title" required></textarea><br><br>
+
+        <fieldset>
+            <label for="attachments">Attachments:&nbsp;</label>
+            <input type="file" id="attachments" name="attachments" accept="image/*"><br><br>
+            
+            <div class="preview"></div><br>
+
+            <textarea id="content" name="content" placeholder="Write Content..." required></textarea>
+        </fieldset><br><br>
+
+        <button type="submit">Submit Post</button><br><br><br>
+
+    </form>
+</section>
+
+<script src="{{ url_for('static', filename='new_post.js') }}"></script>
+
+{% endblock %}

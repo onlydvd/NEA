@@ -1,0 +1,168 @@
+.post{
+  background-color: #fbf5f5;
+  padding: 15px;
+  margin: 30px 50px 20px 50px;
+  border-radius: 8px;
+}
+
+section.messages h1{
+  text-align: center;
+  color: #030000;
+  font-size: 400%;
+  margin-bottom: 10px;
+}
+
+section.messages a{
+  text-decoration: none;
+  color: #262525;
+}
+
+
+nav a{
+  text-align: center;
+  float: right;
+  text-decoration: none;
+  color: #262525;
+}
+
+nav a{
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 8px;
+  font-size: 120%;
+  color: #030000;
+}
+
+
+
+
+
+
+
+nav a:link, nav a:visited {
+  background-color: #356b16;
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+nav a:hover, nav a:active {
+  background-color: rgb(39, 38, 38);
+}
+
+nav a.delete{
+  background-color: #8b0000;
+}
+
+
+nav a.delete:hover, nav a.delete:active {
+  transform: translateY(-4px);
+  background-color: rgb(164, 68, 68);
+}
+
+nav a.back:hover, nav a.back:active {
+  transform: translateX(-4px);
+  background-color: rgb(0, 0, 0);
+}
+
+section.messages img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60vw;
+  margin-top: 20px;
+  height: auto;
+  opacity: 0.9;
+  border-radius: 20px;
+}
+
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+  section.messages h1 {
+    font-size: 300%;
+  }
+  
+  .post {
+    margin: 25px 40px 15px 40px;
+    padding: 12px;
+  }
+  
+  section.messages img {
+    width: 65vw;
+    margin-top: 15px;
+  }
+  
+  nav a {
+    font-size: 110%;
+    padding: 8px;
+    margin-left: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  section.messages h1 {
+    font-size: 250%;
+    margin-bottom: 8px;
+  }
+  
+  .post {
+    margin: 20px 20px 12px 20px;
+    padding: 12px;
+    border-radius: 6px;
+  }
+  
+  section.messages img {
+    width: 80vw;
+    margin-top: 15px;
+    border-radius: 15px;
+  }
+  
+  nav a {
+    font-size: 100%;
+    padding: 8px;
+    margin-left: 5px;
+    border-radius: 4px;
+  }
+  
+  nav a:link, nav a:visited {
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  section.messages h1 {
+    font-size: 200%;
+    margin-bottom: 6px;
+  }
+  
+  .post {
+    margin: 15px 10px 10px 10px;
+    padding: 10px;
+    border-radius: 6px;
+  }
+  
+  section.messages img {
+    width: 90vw;
+    margin-top: 12px;
+    border-radius: 12px;
+  }
+  
+  nav a {
+    font-size: 85%;
+    padding: 6px;
+    margin-left: 3px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  
+  nav a:link, nav a:visited {
+    padding: 8px 10px;
+  }
+  
+  nav a.back {
+    float: none;
+  }
+}

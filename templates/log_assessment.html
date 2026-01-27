@@ -1,0 +1,96 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Log Assessment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='log_assessment.css') }}">
+{% endblock %}
+
+{% block body %}
+    <!-- Top bar -->
+    <div class="menu-bar">
+        <div class="back">
+            <a href="{{ url_for('assessments', student_id=student[0]) }}">Back</a>
+        </div>
+        <h1>Log Assessment</h1>
+    </div>
+
+    <!-- Page layout -->
+    <div class="page">
+
+        <!-- Student card -->
+        <section class="card student-card">
+            <div class="student-left">
+                <img src="{{ url_for('static', filename='Profile.png') }}" alt="Student Photo" class="student-photo">
+            </div>
+
+            <div class="student-right">
+                <h2 class="student-name">{{ student[1] }} {{ student[2] }}</h2>
+                <p class="student-sub">
+                    Student ID: <span class="pill">{{ student[0] }}</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- Form Section -->
+        <section class="card">
+            <div class="card-header">
+                <h3>Create New Assessment Record</h3>
+                <p>Fill in the assessment details below</p>
+            </div>
+
+            <!-- Flash messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" class="assessment-form">
+                <div class="form-group">
+                    <label for="subject_id">Subject</label>
+                    <select id="subject_id" name="subject_id" required>
+                        <option value="">-- Select Subject --</option>
+                        {% for subject_id, subject_name in subjects %}
+                            <option value="{{ subject_id }}">{{ subject_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="type">Assessment Type</label>
+                    <select id="type" name="type" required>
+                        <option value="">-- Select Type --</option>
+                        <option value="Quiz">Quiz</option>
+                        <option value="Test">Test</option>
+                        <option value="Exam">Exam</option>
+                        <option value="Assignment">Assignment</option>
+                        <option value="Project">Project</option>
+                        <option value="Homework">Homework</option>
+                        <option value="Practical">Practical</option>
+                        <option value="Oral">Oral</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="score">Score</label>
+                    <input type="number" id="score" name="score" step="0.01" placeholder="Enter score" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Log Assessment</button>
+                    <a href="{{ url_for('assessments', student_id=student[0]) }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </section>
+
+    </div>
+{% endblock %}

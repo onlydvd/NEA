@@ -1,0 +1,52 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Weekly Student Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='smart_analysis.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="menu-bar">
+    <div class="back">
+        <a href="{{ url_for('smart_summary') }}">Back</a>
+    </div>
+</div>
+
+<div class="analysis-page">
+
+    <div class="student-card">
+        <img src="{{ url_for('static', filename='Profile.png') }}" alt="Student Photo">
+        <div class="student-info">
+            <h1>{{ student[1] }} {{ student[2] }}</h1>
+            <p>Year {{ student[6] }} • {{ student[5] }}</p>
+        </div>
+    </div>
+
+    <form method="POST" class="generate-form">
+        <button
+            type="submit"
+            class="generate-btn"
+            {% if summary_generated %}disabled{% endif %}
+        >
+            {% if summary_generated %}
+                Summary Generated
+            {% else %}
+                Generate Weekly Summary
+            {% endif %}
+        </button>
+    </form>
+
+    {% if summary %}
+        <div class="summary-card">
+            <h2>Weekly Summary & Insights</h2>
+            <p class="summary-text">{{ summary }}</p>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>No summary generated yet.</p>
+            <p>Click <strong>Generate Weekly Summary</strong> to analyse this week’s trends.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

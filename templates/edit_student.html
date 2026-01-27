@@ -1,0 +1,183 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Edit Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_student.css') }}">
+{% endblock %}  
+
+{% block body %}
+    <script src="{{ url_for('static', filename='date_validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='subject_validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='add_student.js') }}"></script>
+    <div class="menu-bar">
+        <div class="back">
+            <a href="{{ url_for('students') }}">Back</a>
+        </div>
+    </div>
+
+    <div class="edit-student-form">
+        <form method="POST" action="{{ url_for('edit_student', student_id=student[0]) }}">
+            <h1>Edit Student Information</h1>
+
+
+            <div class="tab">
+                <h2>Student Info:</h2>
+
+
+                <div class="input-container"> 
+                    <input type="text" id="firstname" name="firstname" value="{{ student[1] }}" required>
+                    <label for="firstname">First Name:</label>
+                </div>
+
+                <div class="input-container">
+                    <input type="text" id="surname" name="surname" value="{{ student[2] }}" required>
+                    <label for="surname">Surname:</label>
+                </div>
+
+                <div class="input-container">
+                    <input type="date" id="dob" name="dob" value="{{ student[3] }}" required>
+                    <label for="dob">Date of Birth:</label>
+                </div>
+
+                <div class="gender-options">GENDER: 
+                    <input type="radio" id="male" name="gender" value="M" {% if student[4] == 'M' %}checked{% endif %}>
+                    <label for="male">Male</label>
+                    <input type="radio" id="female" name="gender" value="F" {% if student[4] == 'F' %}checked{% endif %}>
+                    <label for="female">Female</label>
+                </div>
+                
+                <br><br>
+                <div class="mastery-options">MASTERY: 
+                    <input type="radio" id="STEM" name="mastery" value="STEM" {% if student[5] == 'STEM' %}checked{% endif %}>
+                    <label for="STEM">STEM</label>
+                    <input type="radio" id="ARTS" name="mastery" value="ARTS" {% if student[5] == 'ARTS' %}checked{% endif %}>
+                    <label for="ARTS">ARTS</label>
+                    <input type="radio" id="LAW" name="mastery" value="LAW" {% if student[5] == 'LAW' %}checked{% endif %}>
+                    <label for="LAW">LAW</label>
+                    <input type="radio" id="FINANCE" name="mastery" value="FINANCE" {% if student[5] == 'FINANCE' %}checked{% endif %}>
+                    <label for="FINANCE">FINANCE</label>
+                    <input type="radio" id="MED1" name="mastery" value="MED1" {% if student[5] == 'MED1' %}checked{% endif %}>
+                    <label for="MED1">MED1</label>
+                    <input type="radio" id="MED2" name="mastery" value="MED2" {% if student[5] == 'MED2' %}checked{% endif %}>
+                    <label for="MED2">MED2</label>
+                </div>
+                <br><br>
+                <div class="year-options">YEAR: 
+                    <input type="radio" id="yeargroup" name="yeargroup" value="12" {% if student[6] == 12 %}checked{% endif %}>
+                    <label for="12">12:</label>
+                    <input type="radio" id="yeargroup" name="yeargroup" value="13" {% if student[6] == 13 %}checked{% endif %}>
+                    <label for="13">13:</label>
+                </div>
+                <br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ student[7] }}" required>
+                <br><br>
+            </div>
+
+            <div class="tab">
+                <legend>Subject Choices:</legend>
+                <p>Pick at least 3 subjects in order</p>
+
+                <label for="first_subject">First Subject:</label>
+                <select id="first_subject" name="first_subject" required>
+                    <option value="">-- Select Subject --</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject[0] }}" {% if subject[0] == student[8] %}selected{% endif %}>{{ subject[1] }}</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="second_subject">Second Subject:</label>
+                <select id="second_subject" name="second_subject" required>
+                    <option value="">-- Select Subject --</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject[0] }}" {% if subject[0] == student[9] %}selected{% endif %}>{{ subject[1] }}</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="third_subject">Third Subject:</label>
+                <select id="third_subject" name="third_subject" required>
+                    <option value="">-- Select Subject --</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject[0] }}" {% if subject[0] == student[10] %}selected{% endif %}>{{ subject[1] }}</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="fourth_subject">Fourth Subject (Optional):</label>
+                <select id="fourth_subject" name="fourth_subject">
+                    <option value="">-- Select Subject --</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject[0] }}" {% if subject[0] == student[11] %}selected{% endif %}>{{ subject[1] }}</option>
+                    {% endfor %}
+                </select><br><br>
+            </div>
+
+
+
+
+            <div class="tab">
+                <h2>Additional Info:</h2>
+                <label for="parentname">ParentName: </label>
+                <input type="text" id="parentname" name="parentname" value="{{ info[1] }}" required>
+                <br><br>
+
+                <label for="parentemail">Parentnumber: </label>
+                <input type="number" id="parentnumber" name="parentnumber" value="0{{ info[2] }}" required>
+                <br><br>
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="{{ info[3] }}" required>
+                <br><br>
+
+                <label for="nationality">Nationality:</label>
+                <input type="text" id="nationality" name="nationality" value="{{ info[4] }}" required>
+                <br><br>
+
+                <label for="countryofbirth">Country of Birth:</label>
+                <input type="text" id="countryofbirth" name="countryofbirth" value="{{ info[5] }}" required>
+                <br><br>
+                
+                <label for="enrollmentdate">Enrollment Date:</label>
+                <input type="date" id="enrollmentdate" name="enrollmentdate" value="{{ info[6] }}" required>
+            </div>
+           
+            <div class="tab">
+                <legend>Medical Info:<br><br><small>If none, leave field empty</small></legend>
+
+                <label for="conditions">Conditions: </label>
+                <input placeholder="N/A" type="text" id="conditions" name="conditions" value="{{ medical[1] }}"><br><br>
+
+                <label for="allergies">Allergies: </label>
+                <input placeholder="N/A" type="text" id="allergies" name="allergies" value="{{ medical[2] }}"><br><br>
+
+                <label for="medications">Medications: </label>
+                <input placeholder="N/A" type="text" id="medications" name="medications" value="{{ medical[3] }}"><br><br>
+
+                <label for="needs">Needs</label>
+                <input placeholder="N/A" type="text" id="needs" name="needs" value="{{ medical[4] }}"><br><br>
+
+            </div>
+
+            <div style="overflow:auto;">
+            <div style="float:right;">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            </div>
+        </div>
+
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;margin-top:40px;">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+        </div>
+
+
+
+            <button type="submit" class="save-button">Save Changes</button>
+
+        </form>
+        <script src="{{ url_for('static', filename='add_student.js') }}"></script>
+
+    </div>
+{% endblock %}

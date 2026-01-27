@@ -1,0 +1,473 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&subset=greek-ext');
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #bebebe;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+legend {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+fieldset{
+    border: 2px solid #141413;
+    border-radius: 5px;
+    padding: 20px;
+    width: 60vw;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-size: 18px;
+    margin-bottom: 10px;
+    align-self: flex-start;
+    padding-right: 20px;
+} */
+
+#firstname, #surname, #email {
+  width: 100%;
+  padding: 8px 0 5px 0;
+  margin: 8px 0 16px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #000000;
+  background: transparent;
+  outline: none;
+  border-radius: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.gender-options {
+  display: flex;
+  gap: 10px;
+}
+
+.gender-options input[type="radio"] {
+  display: none; /* hide the default radio circle */
+}
+
+.gender-options label {
+  display: inline-block;
+  padding: 15px 25px;
+  border: 2px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  width: 100px;
+}
+
+#male + label, #female + label {
+  background-color: white;
+}
+
+#male:checked + label {
+  background-color: #3facd7; /* Light blue for male */
+}
+
+#female:checked + label {
+  background-color: #ff6666; /* Light pink for female */    
+}
+
+
+
+
+.input-container{
+	position:relative;
+	margin-bottom:25px;
+}
+
+.input-container label{
+  position:absolute;
+  top:0px;
+  left:0px;
+  font-size:16px;
+  color:#000000;	
+  pointer-events: none;
+  transform: translateY(0);
+  transform-origin: left top;
+  will-change: top, transform;
+  transition: top 0.45s cubic-bezier(.2,1.3,.3,1), font-size 0.25s ease;
+}
+
+.input-container input{ 
+  border:0;
+  border-bottom:1px solid #000000;  
+  background:transparent;
+  width:100%;
+  padding:8px 0 5px 0;
+  font-size:16px;
+  color:#000000;
+}
+
+.input-container input:focus{ 
+  border:none;	
+  outline:none;
+  border-bottom:1px solid #e74c3c;	
+}
+
+#firstname:focus, #surname:focus, #email:focus {
+  outline: none;
+  border-bottom: 1px solid #e74c3c;
+}
+
+/* Center the form and make other inputs inside the form full-width */
+form{
+  max-width: 760px;
+  margin: 32px auto;
+  padding: 24px 28px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+form h1, form h2 {
+  margin-top: 0;
+}
+
+/* Make general inputs fill the form width (keeps floating-label inputs unaffected) */
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form input[type="date"],
+form input[type="tel"],
+form select, form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 6px;
+  margin: 6px 0 16px 0;
+  border: none;
+  border-bottom: 1px solid #000000;
+  background: transparent;
+}
+
+/* keep radio group centered nicely */
+.gender-options{
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
+.btn{
+  color:#fff;
+  background-color:#50413f;
+  outline: none;
+  border: 0;
+  color: #fff;
+  padding:10px 20px;
+  text-transform:uppercase;
+  margin-top:50px;
+  border-radius:6px;
+  cursor:pointer;
+  position:relative;
+}
+/*.btn:after{
+	content:"";
+	position:absolute;
+	background:rgba(0,0,0,0.50);
+	top:0;
+	right:0;
+	width:100%;
+	height:100%;
+}*/
+
+.input-container input:focus ~ label,
+.input-container input:valid ~ label{
+  top:-12px;
+  font-size:12px;
+}
+
+/* Buttons: Prev, Next and Submit */
+#prevBtn, #nextBtn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 160ms ease, transform 80ms ease, box-shadow 160ms ease;
+  border: none;
+  display: inline-block;
+  min-width: 96px;
+}
+
+form button[type="submit"]{
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 160ms ease, transform 80ms ease, box-shadow 160ms ease;
+  border: none;
+  display: block;
+  min-width: 160px;
+  margin: 22px auto 18px auto;
+}
+
+
+
+#nextBtn, #prevBtn{
+  background: #788077;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(231,76,60,0.12);
+}
+
+#nextBtn:hover, #prevBtn:hover{
+  background: #52b94b;
+}
+
+ form button[type="submit"]{
+  background: #0b6d72;
+  color: #ecdede;
+  box-shadow: 0 6px 18px rgba(231,76,60,0.12);
+ }
+
+ form button[type="submit"]:hover {
+  background: #0b347a;
+}
+
+#nextBtn:active, form button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+#nextBtn[disabled], form button[disabled], #prevBtn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* small-screen adjustments */
+@media (max-width:480px){
+  #prevBtn, #nextBtn, form button[type="submit"]{ min-width:72px; padding:9px 12px; }
+}
+
+/* step indicators (bottom of form) */
+.step {
+  height: 12px;
+  width: 12px;
+  margin: 0 4px;
+  background: #bbbbbb;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.9;
+}
+.step.active {
+  background: #e74c3c;
+}
+
+/* invalid field visual */
+.invalid {
+  border-bottom-color: #e74c3c !important;
+}
+
+
+.back a{
+  margin-top: 10vh;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 8px;
+  font-size: 120%;
+  color: #030000;
+}
+
+
+.back a:link, .back a:visited {
+  background-color: #41302f;
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.back a:hover, .back a:active {
+  background-color: rgb(147, 136, 136);
+}
+
+
+.subjects {
+  display: flex;
+  gap: 10px;
+}
+
+.subjects input[type="radio"] {
+  display: none; /* hide the default radio circle */
+}
+
+.subjects label {
+  display: inline-block;
+  padding: 15px 25px;
+  border: 2px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  width: 100px;
+}
+
+#Admin + label, #Maths + label, #English + label, #Science + label, #History + label, #Computing + label {
+  background-color: white;
+}
+
+
+#Admin:checked + label{
+  background-image: linear-gradient(90deg, #ff00c8, #ff4d00, #ffbb00);
+}
+
+#Science:checked + label{
+  background-color: #1e01ff;
+}
+
+#Maths:checked + label {
+  background-color: #fd1f1f; 
+}
+
+#Computing:checked + label {
+  background-color: #ff921e; 
+}
+
+#English:checked + label {
+  background-color: #23eb76; 
+}
+
+#History:checked + label {
+  background-color: #9b59b6; 
+}
+
+
+
+.mastery {
+  gap: 10px;
+}
+
+.mastery input[type="radio"] {
+  width: 12vw;
+  display: none; /* hide the default radio circle */
+}
+
+.mastery label {
+  display: inline-block;
+  padding: 15px 25px;
+  border: 2px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  width: 100px;
+}
+
+.mastery:hover label {
+  translate Y(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+
+#stem:hover + label{
+  background-image: linear-gradient(90deg, #ff00c8, #ff4d00, #ffbb00);
+}
+
+#finance:hover + label{
+  translate: ;
+}
+
+#arts:hover + label {
+}
+
+#law:hover + label {
+}
+
+#fmedo:hover + label {
+}
+
+#fmedt:hover + label {
+}
+
+#smedo:hover + label {
+}
+
+#smedt:hover + label {
+}
+
+#none:hover + label {
+}
+
+
+
+
+
+
+#stem:checked + label{
+  background-image: linear-gradient(90deg, #ff00c8, #ff4d00, #ffbb00);
+}
+
+#finance:checked + label{
+  background-color: #1e01ff;
+}
+
+#arts:checked + label {
+  background-color: #fd1f1f; 
+}
+
+#law:checked + label {
+  background-color: #ff921e; 
+}
+
+#fmedo:checked + label {
+  background-color: #2b3c53; 
+}
+
+#fmedt:checked + label {
+  background-color: #687400; 
+}
+
+#smedo:checked + label {
+  background-color: #ff25ff; 
+}
+
+#smedt:checked + label {
+  background-color: #23eb76; 
+}
+
+#none:checked + label {
+  background-color: #808080; 
+}
+
+
+
+
+.flashes {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.flashes li {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.subjects {
+  display: flex;
+  gap: 10px;
+}

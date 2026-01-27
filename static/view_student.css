@@ -1,0 +1,170 @@
+.manage a{
+  margin-left: 31vw;
+  margin-top: 2vh;
+  margin-bottom: 3vh;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 120%;
+  color: #f1ebeb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30vw;
+}
+
+
+.manage a:link, .manage a:visited {
+  background-color: #23710f;
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  
+}
+
+.manage a:hover, .manage a:active {
+  background-color: rgb(47, 210, 14);
+  color: #000;
+}
+
+
+
+.student-details {
+  margin: 2vw 5vw 0vw 5vw;
+  padding: 2vw;
+  background-color: white;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.behaviour, .assessments, .reports, .flag-student {
+  display: inline-block;
+  margin: 10px;
+}
+
+.behaviour a, .assessments a, .reports a, .flag-student button {
+  padding: 12px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.behaviour a {
+  background-color: #007bff;
+  color: white;
+}
+
+.behaviour a:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.assessments a {
+  background-color: #28a745;
+  color: white;
+}
+
+.assessments a:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.reports a {
+  background-color: #ffc107;
+  color: black;
+}
+
+.reports a:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+.flag-student button {
+  background-color: #dc3545;
+  color: white;
+  font-size: 14px;
+  padding: 12px 20px;
+}
+
+.flag-student button:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}
+
+.flag-student button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.medical-info {
+  margin: 0vw 5vw 0vw 5vw;
+  padding: 2vw;
+  background-color: #f8d7da;
+  text-align: center;
+  border-radius: 10px;
+}
+
+
+.timetable {
+  margin: 1vh 5vw 2vh 5vw;
+  padding: 5vh;
+  background-color: white;
+  text-align: center;
+  border-radius: 10px;
+  text-align: center;
+}
+
+
+
+.timetable {
+  background-color: #fffafa;
+  font-family: Arial, sans-serif;
+}
+
+.timetable h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.timetable table {
+  width: 80%;
+  border-collapse: collapse;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 0 auto;
+}
+
+.timetable th,
+.timetable td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.timetable th {
+  background-color: #32353b;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.timetable tr:nth-child(even) {
+  background-color: #f7f9fc;
+}
+
+.timetable tr:hover {
+  background-color: #e8f0ff;
+}
+
+.timetable td:first-child {
+  font-weight: bold;
+  background-color: #f0f4ff;
+}

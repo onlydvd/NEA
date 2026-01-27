@@ -1,0 +1,74 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Assessments</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assessments.css') }}">
+{% endblock %}
+
+{% block body %}
+    <!-- Top bar -->
+    <div class="menu-bar">
+        <div class="back">
+            <a href="{{ url_for('view_student', student_id=student[0]) }}">Back</a>
+        </div>
+        <h1>Student Assessments</h1>
+    </div>
+
+    <!-- Page layout -->
+    <div class="page">
+
+        <!-- Student card -->
+        <section class="card student-card">
+            <div class="student-left">
+                <img src="{{ url_for('static', filename='Profile.png') }}" alt="Student Photo" class="student-photo">
+            </div>
+
+            <div class="student-right">
+                <h2 class="student-name">{{ student[1] }} {{ student[2] }}</h2>
+                <p class="student-sub">
+                    Student ID: <span class="pill">{{ student[0] }}</span>
+                </p>
+
+                <div class="actions">
+                    <a class="btn" href="{{ url_for('log_assessment', student_id=student[0]) }}">Log Assessment</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assessments Section -->
+        <section class="card">
+            <div class="card-header">
+                <h3>Assessment Records</h3>
+                <p>All logged assessments for this student</p>
+            </div>
+
+            {% if assessments %}
+                <table class="assessments-table">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assessment in assessments %}
+                        <tr>
+                            <td>{{ assessment.subject }}</td>
+                            <td>{{ assessment.type }}</td>
+                            <td>{{ assessment.date }}</td>
+                            <td class="score">{{ assessment.score }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="no-data">
+                    <p>No assessments logged for this student yet.</p>
+                </div>
+            {% endif %}
+        </section>
+
+    </div>
+{% endblock %}

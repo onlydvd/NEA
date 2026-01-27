@@ -1,0 +1,99 @@
+.department{
+    background-color: #fbf5f5;
+    padding: 15px;
+    margin: 30px 80px 40px 80px;
+    border-radius: 8px;
+}
+
+h1{
+    text-align: center;
+    color: #030000;
+    font-size: 400%;
+    margin-bottom: 10px;
+}
+
+a{
+    text-decoration: none;
+    color: #262525;
+}
+
+.back a{
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 8px;
+    font-size: 120%;
+    color: #030000;
+}
+
+
+.back a:link, .back a:visited {
+  background-color: #41302f;
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.back a:hover, .back a:active {
+  background-color: rgb(147, 136, 136);
+}
+
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 350%;
+  }
+  
+  .department {
+    margin: 25px 60px 30px 60px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 300%;
+    margin-bottom: 8px;
+  }
+  
+  .department {
+    margin: 20px 20px 25px 20px;
+    padding: 12px;
+    border-radius: 6px;
+  }
+  
+  .back a {
+    font-size: 100%;
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 220%;
+    margin-bottom: 6px;
+  }
+  
+  .department {
+    margin: 15px 10px 20px 10px;
+    padding: 10px;
+    border-radius: 6px;
+  }
+  
+  a {
+    font-size: 14px;
+  }
+  
+  .back a {
+    font-size: 85%;
+    padding: 8px 10px;
+    margin-left: 3px;
+    border-radius: 4px;
+  }
+  
+  .back a:link, .back a:visited {
+    padding: 8px 10px;
+  }
+}

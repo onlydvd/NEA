@@ -1,0 +1,276 @@
+:root {
+  --bg: #858484;
+  --card: #4589ee;
+  --accent: #4a4a4a;
+  --input-bg: #fff;
+  --text-dark: #0a0a0a;
+  --text-muted: rgba(0, 0, 0, 0.7);
+  --border-light: rgba(0, 0, 0, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "Montserrat", "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+}
+
+.back {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.back a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.back a:hover {
+  background: #000000;
+  transform: translateX(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  padding-top: 80px;
+}
+
+.container {
+  background: var(--card);
+  padding: 3.5rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(18, 33, 64, 0.12);
+  width: 500px;
+  max-width: 95%;
+  text-align: left;
+  color: var(--text-dark);
+}
+
+.container .title {
+  text-align: center;
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin: 0 0 2rem;
+  color: var(--text-dark);
+}
+
+.input-row {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 0.6rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 2px solid var(--border-light);
+  background: var(--input-bg);
+  font-size: 15px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  color: var(--text-dark);
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(236, 96, 45, 0.1);
+  transform: translateY(-2px);
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="text"]::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  margin-top: 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn:hover {
+  background: #3c3e4b;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+}
+
+/* Flash messages */
+.flash {
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 14px;
+  border-left: 4px solid;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.flash.success {
+  background: #d1e7dd;
+  color: #0f5132;
+  border-color: #198754;
+}
+
+.flash.info {
+  background: #e7f3fe;
+  color: #084298;
+  border-color: #0d6efd;
+}
+
+.flash.danger {
+  background: #f8d7da;
+  color: #842029;
+  border-color: #dc3545;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .back {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 20px;
+  }
+
+  .page {
+    padding: 1.5rem;
+    padding-top: 2rem;
+  }
+
+  .container {
+    width: 95%;
+    padding: 2.5rem 1.75rem;
+  }
+
+  .container .title {
+    font-size: 36px;
+    letter-spacing: 1px;
+    margin: 0 0 1.5rem;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    font-size: 14px;
+    padding: 11px 12px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 12px 18px;
+  }
+
+  label {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 1rem;
+    padding-top: 1.5rem;
+  }
+
+  .container {
+    width: 100%;
+    padding: 1.75rem;
+    border-radius: 8px;
+  }
+
+  .container .title {
+    font-size: 28px;
+    letter-spacing: 0.5px;
+    margin: 0 0 1.25rem;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    font-size: 13px;
+    padding: 10px 11px;
+    border-radius: 5px;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 11px 14px;
+  }
+
+  label {
+    font-size: 12px;
+    margin-bottom: 0.5rem;
+  }
+
+  .input-row {
+    margin-bottom: 1.25rem;
+  }
+
+  .flash {
+    font-size: 13px;
+    padding: 12px 14px;
+  }
+}

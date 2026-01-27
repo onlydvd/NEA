@@ -1,0 +1,166 @@
+/* import_students.css */
+/* Works with original HTML. No background or navbar changes. */
+
+/* Center main content */
+.menu-bar,
+section,
+hr,
+ul {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== Header ===== */
+.menu-bar {
+  margin-top: 2rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.menu-bar h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.menu-bar .back a {
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  display: inline-block;
+}
+
+.menu-bar .back a:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ===== Sections as cards ===== */
+section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+section h3 {
+  margin: 0 0 0.9rem 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+/* Divider */
+hr {
+  border: none;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.12);
+  margin: 1.2rem auto;
+}
+
+/* ===== Buttons ===== */
+button {
+  background-color: #6b7280; /* grey */
+  color: #ffffff;
+  padding: 0.75rem 1.4rem;
+  border: none;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.14);
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  background-color: #16a34a; /* green hover */
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Center download button */
+section a {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* ===== Upload form ===== */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* File input */
+input[type="file"] {
+  width: min(520px, 100%);
+  padding: 0.7rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  background: #ffffff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+
+input[type="file"]:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Flash messages ===== */
+ul {
+  margin-top: 1.2rem;
+  padding: 0;
+  list-style: none;
+}
+
+ul li {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  margin-bottom: 0.6rem;
+  font-weight: 650;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.error-message {
+  background: rgba(200, 0, 0, 0.12);
+  color: #7a0b0b;
+}
+
+.success-message {
+  background: rgba(0, 128, 0, 0.12);
+  color: #065f06;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 700px) {
+  .menu-bar,
+  section,
+  hr,
+  ul {
+    max-width: 100%;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .menu-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+  }
+
+  .menu-bar h1 {
+    font-size: 1.6rem;
+  }
+}

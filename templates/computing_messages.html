@@ -1,0 +1,46 @@
+{% extends "base_page.html" %}
+{% block head %}
+    <title>Studsight - Messages</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='messages.css') }}">
+{% endblock %}
+{% block body %}
+    <nav>
+        <div class="back">
+            <a href="{{ url_for('message_page') }}">Back</a>
+        </div>
+        <a class="delete" href="{{ url_for('delete_post', board='computing') }}">Delete Post</a>
+        <a href="{{ url_for('new_post', board='computing') }}">Create New Post</a>
+        <br><br>
+    </nav>
+
+    <section class="messages">
+        <h1>COMPUTING POSTS</h1>
+
+        {% for post in posts %}
+            <a href="{{ url_for('view_post', board='computing', post_id=post[0]) }}">
+                <article class="post">
+                    <h2>{{ post[1] }}</h2>
+
+                    {% for teacher in teachers %}
+                        {% if post[7] == teacher[0] %}
+                            <p><strong>Posted by:</strong> {{ teacher[1] }} {{ teacher[2] }}</p>
+                        {% endif %}
+                    {% endfor %}
+
+                    <p>
+                        <strong>Date:</strong> {{ post[3] }}
+                        <strong>Time:</strong> {{ post[4] }}
+                    </p>
+
+                    {% if post[5] %}
+                        <p><strong>Has Attachments</strong></p>
+                    {% endif %}
+                </article>
+            </a>
+        {% else %}
+            <img class="no-posts-image" src="/static/post.png" alt="No Posts Available">
+        {% endfor %}
+    </section>
+
+    <script src="{{ url_for('static', filename='messages_refresh.js') }}"></script>
+{% endblock %}

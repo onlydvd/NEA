@@ -1,0 +1,95 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - {{ class_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='attendance.css') }}">
+{% endblock %}
+
+{% block body %}
+    <script src="{{ url_for('static', filename='attendance.js') }}"></script>
+    
+    <div class="menu-bar">
+        <div class="back">
+            <a href="{{ url_for('dashboard') }}">Back</a>
+        </div>
+    </div>
+
+    <div class="attendance-container">
+        <div class="attendance-header">
+            <h1>Attendance - {{ class_name }}</h1>
+            <div class="header-info">
+                <p><strong>Teacher:</strong> {{ teacher_name }}</p>
+                <p><strong>Period:</strong> {{ period }}</p>
+                <p><strong>Date:</strong> {{ today }}</p>
+            </div>
+        </div>
+
+        <div class="attendance-status-bar">
+            <span id="marked-count">0</span> / <span id="total-count">0</span> Marked
+            <button id="mark-all-present" class="btn btn-success">Mark All Present</button>
+            <button id="save-attendance" class="btn btn-primary">Save Attendance</button>
+        </div>
+
+        <div class="attendance-table-wrapper">
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Year Group</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr class="student-row" data-student-id="{{ student.id }}">
+                        <td class="student-name">
+                            {{ student.firstname }} {{ student.surname }}
+                        </td>
+                        <td class="student-yeargroup">
+                            {{ student.yeargroup }}
+                        </td>
+                        <td class="student-email">
+                            {{ student.email }}
+                        </td>
+                        <td class="attendance-status">
+                            <div class="button-group">
+                                <button class="status-btn btn-present" data-status="Present" 
+                                    {% if student.attendance_status == 'Present' %}active{% endif %}>
+                                    Present
+                                </button>
+                                <button class="status-btn btn-late" data-status="Late"
+                                    {% if student.attendance_status == 'Late' %}active{% endif %}>
+                                    Late
+                                </button>
+                                <button class="status-btn btn-absent" data-status="Absent"
+                                    {% if student.attendance_status == 'Absent' %}active{% endif %}>
+                                    Absent
+                                </button>
+                            </div>
+                            <span class="status-display">{{ student.attendance_status }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="attendance-summary">
+            <h3>Summary</h3>
+            <p>Present: <span id="summary-present">0</span></p>
+            <p>Late: <span id="summary-late">0</span></p>
+            <p>Absent: <span id="summary-absent">0</span></p>
+            <p>Not Marked: <span id="summary-unmarked">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Pass data to JavaScript
+        const attendanceData = {
+            period: {{ period }},
+            date: '{{ today }}',
+            teacherId: {{ teacher_id }}
+        };
+    </script>
+{% endblock %}

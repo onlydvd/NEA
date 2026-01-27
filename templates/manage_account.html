@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Studsight - Manage Account</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='manage_account.css') }}">
+</head>
+<body>
+    <div class="back">
+        <a href="{{ url_for('dashboard') }}">Back</a>
+    </div>
+
+    <div class="page">
+        <div class="container">
+            <h1 class="title">MANAGE ACCOUNT</h1>         
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category|default('info') }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}  
+
+            <form method="POST">
+                <div class="input-row">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-row">
+                    <label for="current_password">Current Password:</label>
+                    <input type="password" id="current_password" name="current_password" required>
+                </div>
+                <div class="input-row">
+                    <label for="new_password">New Password:</label>
+                    <input type="password" id="new_password" name="new_password" required>
+                </div>
+                <div class="input-row">
+                    <label for="confirm_new_password">Confirm New Password:</label>
+                    <input type="password" id="confirm_new_password" name="confirm_new_password" required>
+                </div>
+                <div class="input-row">
+                    <label for="pin">PIN (for password reset):</label>
+                    <input type="text" id="pin" name="pin" required>
+                </div>
+
+
+                <input class="btn" type="submit" value="Update Password">
+            </form>
+        </div>
+    </div>
+</body>
+</html> 

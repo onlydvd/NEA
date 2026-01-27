@@ -1,2 +1,12 @@
 Flask
+Flask-Mail
 Gunicorn
+SQLAlchemy
+pyinputplus
+Flask-Login
+pandas
+numpy
+matplotlib
+openai
+python-dotenv
+requests

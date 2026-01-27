@@ -1,0 +1,257 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='analyse.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block body %}
+    <!-- Top bar -->
+    <div class="menu-bar">
+        <div class="back">
+            <a href="{{ url_for('view_student', student_id=student[0]) }}">Back</a>
+        </div>
+        <h1>Student Analysis</h1>
+    </div>
+
+    <!-- Page layout -->
+    <div class="page">
+
+        <!-- Student card -->
+        <section class="card student-card">
+            <div class="student-left">
+                <img src="{{ url_for('static', filename='Profile.png') }}" alt="Student Photo" class="student-photo">
+            </div>
+
+            <div class="student-right">
+                <h2 class="student-name">{{ student[1] }} {{ student[2] }}</h2>
+
+                <!-- If you still want "Detentions Today", make sure your route sends a variable called detentions_today -->
+                <p class="student-sub">
+                    Student ID: <span class="pill">{{ student_id}}</span>
+                </p>
+
+                <div class="actions">
+                    <a class="btn" href="{{ url_for('log_behaviour', student_id=student[0]) }}">Log Behaviour</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             1) HOUSE POINTS SECTION
+        ========================== -->
+        <section class="card">
+            <div class="card-header">
+                <h3>House Points</h3>
+                <p>Previous week vs current week</p>
+            </div>
+
+            <div class="chart-wrap">
+                <canvas id="housePointsChart"></canvas>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">Previous Week</span>
+                    <span class="stat-value">{{ prev_hp }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Current Week</span>
+                    <span class="stat-value">{{ curr_hp }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Change</span>
+                    <span class="stat-value">{{ curr_hp - prev_hp }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             2) DETENTIONS SECTION
+        ========================== -->
+        <section class="card">
+            <div class="card-header">
+                <h3>Detentions</h3>
+                <p>Previous week vs current week</p>
+            </div>
+
+            <div class="chart-wrap">
+                <canvas id="detentionsChart"></canvas>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">Previous Week</span>
+                    <span class="stat-value">{{ prev_detentions }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Current Week</span>
+                    <span class="stat-value">{{ curr_detentions }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Change</span>
+                    <span class="stat-value">{{ curr_detentions - prev_detentions }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             3) WITHDRAWALS SECTION
+        ========================== -->
+        <section class="card">
+            <div class="card-header">
+                <h3>Withdrawals</h3>
+                <p>Previous week vs current week</p>
+            </div>
+
+            <div class="chart-wrap">
+                <canvas id="withdrawalsChart"></canvas>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">Previous Week</span>
+                    <span class="stat-value">{{ prev_wd }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Current Week</span>
+                    <span class="stat-value">{{ curr_wd }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Change</span>
+                    <span class="stat-value">{{ curr_wd - prev_wd }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================
+             4) ATTENDANCE SECTION
+        ========================== -->
+        <section class="card">
+            <div class="card-header">
+                <h3>Attendance</h3>
+                <p>Previous week vs current week</p>
+            </div>
+
+            <div class="chart-wrap">
+                <canvas id="attendanceChart"></canvas>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">This Week Present</span>
+                    <span class="stat-value">{{ curr_present }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">This Week Absent</span>
+                    <span class="stat-value">{{ curr_absent }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">This Week Late</span>
+                    <span class="stat-value">{{ curr_late }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Last Week Present</span>
+                    <span class="stat-value">{{ prev_present }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Last Week Absent</span>
+                    <span class="stat-value">{{ prev_absent }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Last Week Late</span>
+                    <span class="stat-value">{{ prev_late }}</span>
+                </div>
+            </div>
+        </section>
+
+    <!-- Charts -->
+    <script>
+        // Simple helper to build the same chart style for each section
+        function buildCompareChart(canvasId, labelText, prevValue, currValue) {
+            const ctx = document.getElementById(canvasId);
+
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Previous Week', 'Current Week'],
+                    datasets: [{
+                        label: labelText,
+                        data: [prevValue, currValue],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                    },
+                    plugins: {
+                        legend: { display: true }
+                    }
+                }
+            });
+        }
+
+        // Values from Flask/Jinja (numbers)
+        const prevHP = {{ prev_hp }};
+        const currHP = {{ curr_hp }};
+
+        const prevDet = {{ prev_detentions }};
+        const currDet = {{ curr_detentions }};
+
+        const prevWd = {{ prev_wd }};
+        const currWd = {{ curr_wd }};
+
+        // Attendance values
+        const prevPresent = {{ prev_present }};
+        const currPresent = {{ curr_present }};
+        const prevAbsent = {{ prev_absent }};
+        const currAbsent = {{ curr_absent }};
+        const prevLate = {{ prev_late }};
+        const currLate = {{ curr_late }};
+
+        buildCompareChart('housePointsChart', 'House Points', prevHP, currHP);
+        buildCompareChart('detentionsChart', 'Detentions', prevDet, currDet);
+        buildCompareChart('withdrawalsChart', 'Withdrawals', prevWd, currWd);
+
+        // Attendance chart - grouped bar chart showing all three statuses
+        const attendanceCtx = document.getElementById('attendanceChart');
+        new Chart(attendanceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Present', 'Absent', 'Late'],
+                datasets: [
+                    {
+                        label: 'Previous Week',
+                        data: [prevPresent, prevAbsent, prevLate],
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Current Week',
+                        data: [currPresent, currAbsent, currLate],
+                        backgroundColor: 'rgba(75, 192, 75, 0.5)',
+                        borderColor: 'rgba(75, 192, 75, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                },
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+        });
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,197 @@
+/* Table Styling */
+tr th {
+    padding: 10px 5px 10px 5px;
+    background-color: #262525;
+    font-size: 17px;
+    color: rgb(241, 221, 221);
+}
+
+table, th, td {
+    border: 1px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+}
+
+tr td {
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #e8e8e8;
+}
+
+/* Page Layout */
+body {
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+h1 {
+    text-align: center;
+    font-size: 250%;
+    color: #262525;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container table {
+    width: 95%;
+    margin: 0 auto;
+}
+
+/* Menu Bar */
+.menu-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2vh;
+}
+
+.menu-bar a.back:link, 
+.menu-bar a.back:visited {
+    background-color: #41302f;
+    color: rgb(255, 255, 255);
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    font-size: 120%;
+    margin-left: 8px;
+}
+
+.menu-bar a.back:hover, 
+.menu-bar a.back:active {
+    background-color: rgb(0, 0, 0);
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.search-bar form {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input[type=text] {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px;
+}
+
+.search-bar button {
+    padding: 8px 12px;
+    margin-left: 8px;
+    background: #41302f;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background: #262525;
+}
+
+.search-bar a {
+    margin-left: 15px;
+    color: #41302f;
+    text-decoration: none;
+}
+
+.search-bar a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+.center {
+    text-align: center;
+}
+
+.actions-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 25px 0;
+}
+
+.btn {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-grey {
+    background: #6b6b6b;
+    color: white;
+}
+
+.btn-grey:hover {
+    background: #2f7d32;
+}
+
+.btn-danger {
+    background: #9b2c2c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+/* Confirmation Box */
+.confirm-box {
+    padding: 10px 20px;
+}
+
+.warning {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 12px;
+    border-radius: 4px;
+    margin: 10px 20px 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Flash Messages */
+.flash-wrap {
+    padding: 0 20px;
+}
+
+.flash {
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.flash.success {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.flash.error {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}

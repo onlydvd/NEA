@@ -1,0 +1,18 @@
+.post{
+    background-color: #fbf5f5;
+    padding: 15px;
+    margin: 30px 50px 20px 50px;
+    border-radius: 8px;
+}
+
+section.messages h1{
+    text-align: center;
+    color: #030000;
+    font-size: 400%;
+    margin-bottom: 10px;
+}
+
+section.messages a{
+    text-decoration: none;
+    color: #262525;
+}

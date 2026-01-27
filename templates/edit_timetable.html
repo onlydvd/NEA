@@ -1,0 +1,83 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Edit Timetable</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='edit_timetable.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="menu-bar">
+        <div class="back">
+            <a href="{{ url_for('view_student', student_id=student_id) }}">Back to Student Profile</a>
+        </div>
+    </div>
+
+    <div class="edit-timetable-form">
+        <h1>Edit Timetable for Student ID: {{ student_id }}</h1>
+        <form method="POST" action="{{ url_for('edit_timetable', student_id=student_id) }}">
+            <table class="timetable-form">
+                <tr>
+                    <th>Day</th>
+                    <th>AM Mastery</th>
+                    <th>Period 1</th>
+                    <th>Period 2</th>
+                    <th>Period 3</th>
+                    <th>PM Mastery</th>
+                    <th>Period 4</th>
+                    <th>Period 5</th>
+                    <th>Period 6</th>
+                </tr>
+
+                {% set days = {
+                    1: "MON",
+                    2: "TUE",
+                    3: "WED",
+                    4: "THU",
+                    5: "FRI"
+                } %}
+
+              {% for i in timetable %}
+                <tr>
+                    <td>{{ days[i[1]] }}</td>
+                    <td>{{mastery}}</td>
+                    {% for j in range(2, 5) %}
+                        <td>
+                            <select name="day{{ i[1] }}_period{{ j }}" id="day{{ i[1] }}_period{{ j }}">
+                                <option value=""> - </option>
+                                {% for period_id, period_name in periods %}
+                                    {% if period_id == i[j + 1] %}
+                                        <option value="{{ period_id }}" selected>{{ period_name }}</option>
+                                    {% else %}
+                                        <option value="{{ period_id }}">{{ period_name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                    {% endfor %}
+                    <td>{{mastery}}</td>
+                    {% for j in range(6, 9) %}
+                        <td>
+                            <select name="day{{ i[1] }}_period{{ j }}" id="day{{ i[1] }}_period{{ j }}">
+                                <option value=""> - </option>
+                                {% for period_id, period_name in periods %}
+                                    {% if period_id == i[j + 1] %}
+                                        <option value="{{ period_id }}" selected>{{ period_name }}</option>
+                                    {% else %}
+                                        <option value="{{ period_id }}">{{ period_name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                    {% endfor %}
+                </tr>
+              {% endfor %}
+
+
+
+            </table>
+            <br>
+            <button type="submit" class="save-button">Save Timetable</button>
+        </form>
+    </div>
+
+{% endblock %}

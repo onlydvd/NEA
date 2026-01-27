@@ -1,0 +1,95 @@
+:root{
+  --bg:#dedede;
+  --card:#ec602d;
+  --accent:#4a4a4a;
+  --input-bg:#fff;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  height:100%;
+  margin:0;
+  font-family: "Montserrat", "Segoe UI", Arial, sans-serif;
+  background:var(--bg);
+}
+
+.page {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+}
+
+
+.container {
+  background:var(--card);
+  padding:3.5rem 2.5rem;
+  border-radius:12px;
+  box-shadow: 0 12px 40px rgba(18,33,64,0.12);
+  width: 420px;
+  max-width:95%;
+  text-align:left;
+  color:#111;
+}
+
+.container .title {
+  text-align:center;
+  font-size:48px;
+  font-weight:800;
+  letter-spacing:2px;
+  margin:0 0 1.75rem;
+  color:#0a0a0a;
+}
+
+.input-row{ margin-bottom:1.25rem; }
+label{
+  display:block;
+  font-size:14px;
+  margin-bottom:0.5rem;
+  color:rgba(0,0,0,0.7);
+}
+
+input[type="email"],
+input[type="password"],
+input[type="password"]{
+  width:100%;
+  padding:10px 14px;
+  border-radius:4px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:var(--input-bg);
+  font-size:16px;
+}
+
+.btn {
+  display:block;
+  width:100%;
+  padding:12px 18px;
+  margin-top:0.75rem;
+  background:var(--accent);
+  color:#fff;
+  font-size:20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+
+.flash {
+  padding:10px 14px;
+  border-radius:8px;
+  margin-bottom:1rem;
+  font-size:15px;
+}
+.flash.success{ background:#d1e7dd; color:#0f5132; border:1px solid #badbcc; }
+.flash.info{ background:#e7f3fe; color:#084298; border:1px solid #b6e0fe; }
+.flash.danger{ background:#f8d7da; color:#842029; border:1px solid #f5c2c7; }
+
+
+@media (max-width:480px){
+  .container{ padding:2rem; }
+  .container .title{ font-size:36px; }
+}
+
+

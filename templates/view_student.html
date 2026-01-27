@@ -1,0 +1,132 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - View Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='view_student.css') }}">
+{% endblock %}
+
+{% block body %}
+    <script src="{{ url_for('static', filename='flag_student.js') }}"></script>
+    
+    <div class="menu-bar">
+        <div class="back">
+            <a href="{{ url_for('students') }}">Back to Students List</a>
+        </div>
+    </div>
+
+    <div class="student-details">
+        <h1>Student Details</h1>
+        <img src="{{ url_for('static', filename='Profile.png') }}" alt="Student Photo" class="student-photo">
+        <h2>{{ student[1] }} {{ student[2] }}</h2>
+        <small>Detentions: {{ detentions }}</small>
+        <br><br><br>
+
+        <div class="behaviour">
+            <a href="{{ url_for('log_behaviour', student_id=student[0]) }}">LOG BEHAVIOUR</a>
+        </div>
+
+        <div class="assessments">
+            <a href="{{ url_for('assessments', student_id=student[0]) }}">ASSESSMENTS</a>
+        </div>
+
+        <div class="reports">
+            <a href="{{ url_for('analyse', student_id=student[0]) }}">VIEW BEHAVIOUR REPORTS</a>
+        </div>
+
+        <div class="flag-student">
+            <button id="flag-btn" onclick="flagStudent({{ student[0] }})">🚩 FLAG STUDENT FOR HELP</button>
+        </div>
+        
+
+        
+        <p><strong>ID:</strong> {{ student[0] }}</p>
+        <p><strong>Gender:</strong> {{ student[4] }}</p>
+        <p><strong>Date of Birth:</strong> {{ student[3] }}</p>
+        <p><strong>Year:</strong> {{ student[6] }}</p>     
+        <p><strong>Mastery:</strong> {{ student[5] }}</p>
+        <p><strong>Email:</strong> {{ student[7] }}</p>
+        {% for details in info %}
+            {% if details[0] == student[0] %}
+                <p><strong>Guardian Contact:</strong> 0{{ details[2] }}</p>
+                <p><strong>Address:</strong> {{ details[3] }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <br>
+
+    <div class="timetable">
+        <h2>Timetable</h2>
+        {% if subject_names %}
+            <p>Subjects: {{ subject_names|join(', ') }}.</p>
+        {% else %}
+            <p>Subjects: None</p>
+        {% endif %}
+        <table class="timetable">
+            <tr>
+                <th>Day</th>
+                <th>AM Mastery</th>
+                <th>Period 1</th>
+                <th>Period 2</th>
+                <th>Period 3</th>
+                <th>PM Mastery</th>
+                <th>Period 4</th>
+                <th>Period 5</th>
+                <th>Period 6</th>
+            </tr>
+
+            {% set days = {
+                1: "MON",
+                2: "TUE",
+                3: "WED",
+                4: "THU",
+                5: "FRI"
+            } %}
+
+            {% for i in timetable %}
+                <tr>
+                    <td>{{ days[i[1]] }}</td>
+                    {% for j in range(2, 10) %}
+                        {% if i[j] == None %}
+                            <td>-</td>
+                        {% else %}
+                            <td>{{ i[j] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+
+
+            {% endfor %}
+        </table>
+
+        <div>
+            <small>*If timetable is empty, please contact administration to set up timetable for this student.</small>
+            {% if role == "A" %}
+                <br><br>
+                <a href="{{ url_for('edit_timetable', student_id=student[0]) }}" class="edit-timetable-button">Edit Timetable</a>
+            {% endif %}
+        </div>
+
+
+
+    </div>
+
+
+    {% if medical %}
+    <div class="medical-info">
+        <h2>Medical Information</h2>
+        <p><strong>Allergies:</strong> {{ medical[3] }}</p>
+        <p><strong>Medications:</strong> {{ medical[2] }}</p>
+        <p><strong>Medical Conditions:</strong> {{ medical[1] }}</p>
+        <p><strong>Needs:</strong>{{ medical[4] }}</p>
+    </div>
+    {% endif %}
+    <br><br>
+
+    {% if role == 'A' %}
+        <div class="manage">
+            <a href="{{ url_for('edit_student', student_id=student[0]) }}" class="edit-button">Manage Student</a>
+        </div>
+        <br><br>
+    {% endif %}
+    {% endblock %}  
+

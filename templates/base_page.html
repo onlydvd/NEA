@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('dashboard') }}" class="normal">Dashboard</a>
+
+        <a href="{{ url_for('current_class') }}" class="normal">Class</a>
+
+            
+        <a href="{{ url_for('students') }}" class="normal"> Search Students</a>
+
+        
+
+        <a href="{{ url_for('teachers') }}" class="normal">Teachers</a>
+   
+        <a href="{{ url_for('logout') }}" class="normal">Logout</a>
+        
+        <a href="{{ url_for('profile', teacher_id=id) }}" class="split">
+            <div class="navbar-profile">
+                <img src="{{ url_for('static', filename='Profile.png') }}" alt="">  
+                <div class="info">
+                    <h2> {{ firstname}} {{surname}}</h2>
+                    <h3>{{email}}</h3>
+                </div>
+            </div>
+        </a>
+    </header>
+
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+</body>
+</html>

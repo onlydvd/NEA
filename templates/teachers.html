@@ -1,0 +1,103 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Students</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='students.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="menu-bar">
+            <div class="back">
+                <a href="{{ url_for('dashboard') }}">Back</a>
+            </div>
+            {% if role == 'A' %}
+                <a class="red" href="{{ url_for('delete_teacher') }}">Delete Teacher</a>
+                <a href="{{ url_for('add_teacher') }}">Add Teacher</a>
+            {% endif %}
+    </div>
+    <br><br><br>
+
+    <h1>Teachers List</h1>
+    
+    <div class="search-bar">
+        <form method="GET" action="{{ url_for('teachers') }}">
+            <input type="text" name="query" placeholder="Search teachers..." size="50" value="{{ query or '' }}">
+            <button type="submit"><i class="fa fa-search"></i></button><br><br>
+            {% if query %}<a href="{{ url_for('teachers') }}" style="margin-left: 10px;">Clear</a><br><br>{% endif %}
+        </form>
+    </div>
+    {% if query %}
+        <p style="color: #666; margin: 10px 0;">Search results for: <strong>{{ query }}</strong> ({{ students|length }} found)</p>
+    {% endif %}
+    <div class="container">
+        <table>
+            <tr>
+                <th style="width: 6%;">ID</th>
+                <th style="width: 8%;">First Name</th>
+                <th style="width: 10%;">Last Name</th>
+                <th style="width: 4%;">Gender</th>
+                <th style="width: 8%;">D.O.B</th>
+                <th style="width: 12%;">Email</th>
+                <th style="width: 7%">Mastery</th>
+                <th style="width: 9%;">Subject</th>
+                <th style="width: 12%;">Personal Email</th>
+                <th style="width: 20%;">Qualifications</th>
+
+            </tr>
+            {% for teacher in teachers %}
+            <tr class="clickable-row"  data-href="{{ url_for('profile', teacher_id=teacher[0]) }}" style="cursor: pointer;">
+                <td>{{ teacher[0] }}</td>
+                <td>{{ teacher[1] }}</td>
+                <td>{{ teacher[2] }}</td>
+                <td>{{ teacher[3] }}</td>
+
+                {% for details in info %}
+                    {% if details[0] == teacher[0] %}
+                        <td>{{ details[3] }}</td>
+                    {% endif %}
+                {% endfor %}
+
+                <td>{{ teacher[4] }}</td>
+
+                {% if teacher[7] == None %}
+                    <td>N/A</td>
+                {% else %}
+                    {% for mastery in masterys %}
+                        {% if mastery[0] == teacher[6] %}
+                            <td>{{ mastery[1] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% for subject in subjects %}
+                    {% if subject[0] == teacher[6] %}
+                        <td>{{ subject[1] }}</td>
+                    {% endif %}
+                {% endfor %}
+
+                {% for details in info %}
+                    {% if details[0] == teacher[0] %}
+                        <td>{{ details[2] }}</td>
+                        <td>{{ details[4] }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <script>
+        document.querySelectorAll('.clickable-row').forEach(row => {
+            row.addEventListener('click', function() {
+                window.location = this.getAttribute('data-href');
+            });
+        });
+    </script>
+    
+{% endblock %}
+
+
+
+
+<!-- <tr class="clickable-row" data-href="{{ url_for('view_student', student_id=student[0]) }}" style="cursor: pointer;"> -->

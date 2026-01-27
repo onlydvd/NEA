@@ -1,0 +1,213 @@
+h1{
+    text-align: center;
+    font-size: 300%;
+    margin-bottom: 20px;
+}
+
+form{
+    text-align: left;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+button{
+    background-color: #356b16;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#content{
+    width: 95%;
+    height: 50vh;        
+    padding: 10px;       
+    font-size: 16px;
+    border-radius: 5px;   
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+#title{
+    width: 35%;
+    height: 7vh;
+    font-size: 30px;
+    padding: 10px;
+    border-radius: 5px;   
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+fieldset{
+    background-color: aqua;
+}
+
+
+.new-post-form a{
+    text-align: center;
+    float: right;
+    text-decoration: none;
+    color: #262525;
+}
+
+.new-post-form a{
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 8px;
+    font-size: 120%;
+    color: #030000;
+}
+
+
+.new-post-form a:link, .new-post-form a:visited {
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.new-post-form a:hover, .new-post-form a:active {
+  background-color: rgb(147, 136, 136);
+}
+
+.new-post-form a{
+    float: left;
+    background-color: #41302f;
+}
+
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 250%;
+  }
+  
+  form {
+    margin-left: 15px;
+  }
+  
+  #title {
+    width: 40%;
+    font-size: 24px;
+  }
+  
+  #content {
+    height: 45vh;
+    font-size: 15px;
+  }
+  
+  button {
+    font-size: 15px;
+    padding: 9px 18px;
+  }
+  
+  .new-post-form a {
+    font-size: 110%;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 200%;
+    margin-bottom: 15px;
+  }
+  
+  form {
+    margin-left: 10px;
+    margin-top: 15px;
+  }
+  
+  #title {
+    width: 90%;
+    height: 6vh;
+    font-size: 18px;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  #content {
+    width: 90%;
+    height: 40vh;
+    font-size: 14px;
+    padding: 8px;
+  }
+  
+  button {
+    font-size: 14px;
+    padding: 8px 16px;
+    margin-top: 10px;
+  }
+  
+  fieldset {
+    margin: 0 10px;
+  }
+  
+  .new-post-form a {
+    font-size: 100%;
+    padding: 8px;
+    margin-left: 5px;
+    border-radius: 4px;
+  }
+  
+  .new-post-form a:link, .new-post-form a:visited {
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 160%;
+    margin-bottom: 12px;
+  }
+  
+  form {
+    margin-left: 8px;
+    margin-top: 12px;
+  }
+  
+  #title {
+    width: 95%;
+    height: 6vh;
+    font-size: 16px;
+    padding: 6px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+  }
+  
+  #content {
+    width: 95%;
+    height: 35vh;
+    font-size: 13px;
+    padding: 6px;
+    border-radius: 4px;
+  }
+  
+  button {
+    font-size: 13px;
+    padding: 7px 14px;
+    margin-top: 8px;
+    border-radius: 4px;
+  }
+  
+  fieldset {
+    margin: 0 8px;
+    background-color: #e0e0e0;
+  }
+  
+  .new-post-form a {
+    font-size: 85%;
+    padding: 6px;
+    margin-left: 3px;
+    margin-top: 8px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  
+  .new-post-form a:link, .new-post-form a:visited {
+    padding: 8px 10px;
+  }
+}

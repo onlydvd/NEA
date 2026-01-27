@@ -1,0 +1,101 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Delete Students</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='students.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='delete_students.css') }}">
+    
+    <script>
+        function toggleSelectAll(source) {
+            const checkboxes = document.querySelectorAll('input[name="delete_ids"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = source.checked;
+            });
+        }
+    </script>
+    
+{% endblock %}
+
+{% block body %}
+<div class="menu-bar">
+    <a class="back" href="{{ url_for('students') }}">Back</a>
+</div>
+<br><br>
+<h1>Delete Students</h1>
+
+
+<div class="search-bar">
+    <form method="GET" action="{{ url_for('delete_students') }}">
+        <input type="text" name="query" placeholder="Search students..." size="50" value="{{ query or '' }}">
+        <button type="submit"><i class="fa fa-search"></i></button><br><br>
+        {% if query %}<a href="{{ url_for('delete_students') }}" style="margin-left: 10px;">Clear</a><br><br>{% endif %}
+    </form>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-wrap">
+      {% for category, msg in messages %}
+        <p class="flash {{ category }}">{{ msg }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<br><br><br>
+<form method="POST" action="{{ url_for('confirm_delete_students') }}">
+
+    <div class="actions-row">
+        <a class="btn btn-grey" href="{{ url_for('students') }}">Cancel</a>
+        <button class="btn btn-danger" type="submit">Continue to Confirm</button>
+    </div>
+
+    
+
+    <div class="container">
+        <table>
+            <tr>
+                <th style="width:4%;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"> Select All</th>
+                <th style="width:6%;">ID</th>
+                <th style="width:8%;">First Name</th>
+                <th style="width:10%;">Last Name</th>
+                <th style="width:4%;">Gender</th>
+                <th style="width:8%;">D.O.B</th>
+                <th style="width:5%;">Year</th>
+                <th style="width:7%;">Mastery</th>
+                <th style="width:12%;">Email</th>
+                <th style="width:9%;">Guardian Contact</th>
+                <th style="width:20%;">Address</th>
+            </tr>
+
+            {% for student in students %}
+            <tr>
+                <td class="center">
+                    <input type="checkbox" name="delete_ids" value="{{ student[0] }}">
+                </td>
+                <td>{{ student[0] }}</td>
+                <td>{{ student[1] }}</td>
+                <td>{{ student[2] }}</td>
+                <td>{{ student[4] }}</td>
+                <td>{{ student[3] }}</td>
+                <td>{{ student[6] }}</td>
+                <td>{{ student[5] }}</td>
+                <td>{{ student[7] }}</td>
+
+                {% set found = false %}
+                {% for details in info %}
+                    {% if details[0] == student[0] %}
+                        <td>{{ details[2] }}</td>
+                        <td>{{ details[3] }}</td>
+                        {% set found = true %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    
+</form>
+{% endblock %}

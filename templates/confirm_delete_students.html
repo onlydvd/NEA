@@ -1,0 +1,58 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+  <title>Studsight - Confirm Deletion</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='students.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='delete_students.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="menu-bar">
+    <div class="back">
+        <a href="{{ url_for('delete_students') }}">Back</a>
+    </div>
+</div>
+<br><br>
+<h1>Confirm Deletion of Students</h1>
+
+<div class="confirm-box">
+    <p class="warning">
+        You are about to permanently delete <strong>{{ selected_students|length }}</strong> student(s).
+        This will remove their linked records (e.g. timetable / attendance / info). This cannot be undone.
+    </p>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th style="width:8%;">ID</th>
+                <th style="width:25%;">First Name</th>
+                <th style="width:25%;">Last Name</th>
+                <th style="width:8%;">Gender</th>
+                <th style="width:8%;">Year</th>
+                <th style="width:65%;">Email</th>
+            </tr>
+            {% for s in selected_students %}
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+                <td>{{ s[2] }}</td>
+                <td>{{ s[4] }}</td>
+                <td>{{ s[6] }}</td>
+                <td>{{ s[7] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <form method="POST" action="{{ url_for('final_delete_students') }}">
+        {% for sid in selected_ids %}
+            <input type="hidden" name="selected_ids" value="{{ sid }}">
+        {% endfor %}
+
+        <div class="actions-row">
+            <a class="btn btn-grey" href="{{ url_for('delete_students') }}">Cancel</a>
+            <button class="btn btn-danger" type="submit">Delete Selected Students</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

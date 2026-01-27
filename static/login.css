@@ -1,0 +1,148 @@
+:root{
+  --bg:#dedede;
+  --card:#ec602d;
+  --accent:#4a4a4a;
+  --input-bg:#fff;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  height:100%;
+  margin:0;
+  font-family: "Montserrat", "Segoe UI", Arial, sans-serif;
+  background:var(--bg);
+}
+
+.page {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+}
+
+
+.container {
+  background:var(--card);
+  padding:3.5rem 2.5rem;
+  border-radius:12px;
+  box-shadow: 0 12px 40px rgba(18,33,64,0.12);
+  width: 420px;
+  max-width:95%;
+  text-align:left;
+  color:#111;
+}
+
+.container .title {
+  text-align:center;
+  font-size:48px;
+  font-weight:800;
+  letter-spacing:2px;
+  margin:0 0 1.75rem;
+  color:#0a0a0a;
+}
+
+.input-row{ margin-bottom:1.25rem; }
+label{
+  display:block;
+  font-size:14px;
+  margin-bottom:0.5rem;
+  color:rgba(0,0,0,0.7);
+}
+input[type="email"],
+input[type="password"]{
+  width:100%;
+  padding:10px 14px;
+  border-radius:4px;
+  border:1px solid rgba(0,0,0,0.12);
+  background:var(--input-bg);
+  font-size:16px;
+}
+
+.btn {
+  display:block;
+  width:100%;
+  padding:12px 18px;
+  margin-top:0.75rem;
+  background:var(--accent);
+  color:#fff;
+  font-weight: bold;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size:20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.btn:hover {
+  background: #3c3e4b;
+  transform: translateY(-3px) scale(1.01);
+}
+
+
+
+
+.flash {
+  padding:10px 14px;
+  border-radius:8px;
+  margin-bottom:1rem;
+  font-size:15px;
+}
+.flash.success{ background:#d1e7dd; color:#0f5132; border:1px solid #badbcc; }
+.flash.info{ background:#e7f3fe; color:#084298; border:1px solid #b6e0fe; }
+.flash.danger{ background:#f8d7da; color:#842029; border:1px solid #f5c2c7; }
+
+
+@media (max-width:1024px){
+  .container{ width: 90%; }
+  .container .title{ font-size:42px; }
+  input[type="email"],
+  input[type="password"]{
+    font-size:15px;
+    padding:9px 12px;
+  }
+  .btn{ font-size:18px; padding:11px 16px; }
+}
+
+@media (max-width:768px){
+  .page{ padding:1.5rem; }
+  .container{ 
+    width: 95%; 
+    padding:2.5rem 1.75rem;
+  }
+  .container .title{ font-size:38px; }
+  input[type="email"],
+  input[type="password"]{
+    font-size:14px;
+    padding:8px 11px;
+  }
+  .btn{ font-size:16px; padding:10px 15px; }
+}
+
+@media (max-width:480px){
+  .page{ padding:1rem; }
+  .container{ 
+    width: 100%; 
+    padding:2rem; 
+    border-radius:8px;
+  }
+  .container .title{ 
+    font-size:32px;
+    letter-spacing:1px;
+    margin:0 0 1.5rem;
+  }
+  input[type="email"],
+  input[type="password"]{
+    font-size:13px;
+    padding:7px 10px;
+    border-radius:3px;
+  }
+  .btn{ 
+    font-size:14px; 
+    padding:9px 12px;
+    border-radius:8px;
+  }
+  label{ font-size:13px; }
+  .flash{ font-size:13px; padding:8px 10px; }
+}

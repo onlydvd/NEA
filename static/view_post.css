@@ -1,0 +1,47 @@
+h2{
+  font-size: 10vh;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+
+h1 {
+  margin-left: 2vw;
+  font-size: 4vh;
+  font-weight: normal;
+}
+
+section.post-content {
+  margin: 20px 0;
+  line-height: 1.6;
+  font-size: 18px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: wheat;
+}
+
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+    margin: 15px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+}

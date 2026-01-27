@@ -1,0 +1,110 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Delete Teachers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='delete_teacher.css') }}">
+    
+    <script>
+        function toggleSelectAll(source) {
+            const checkboxes = document.querySelectorAll('input[name="delete_ids"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = source.checked;
+            });
+        }
+    </script>
+    
+{% endblock %}
+
+{% block body %}
+<div class="menu-bar">
+    <a class="back" href="{{ url_for('teachers') }}">Back</a>
+</div>
+<br><br>
+<h1>Delete Teachers</h1>
+
+
+<div class="search-bar">
+    <form method="GET" action="{{ url_for('delete_teacher') }}">
+        <input type="text" name="query" placeholder="Search teachers..." size="50" value="{{ query or '' }}">
+        <button type="submit"><i class="fa fa-search"></i></button><br><br>
+        {% if query %}<a href="{{ url_for('delete_teacher') }}" style="margin-left: 10px;">Clear</a><br><br>{% endif %}
+    </form>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-wrap">
+      {% for category, msg in messages %}
+        <p class="flash {{ category }}">{{ msg }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<br><br><br>
+<form method="POST" action="{{ url_for('confirm_delete_teacher') }}">
+
+    <div class="actions-row">
+        <a class="btn btn-grey" href="{{ url_for('teachers') }}">Cancel</a>
+        <button class="btn btn-danger" type="submit">Continue to Confirm</button>
+    </div>
+    
+
+    <div class="container">
+        <table>
+            <tr>
+                <th style="width:4%;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"> Select All</th>
+                <th style="width:6%;">ID</th>
+                <th style="width:8%;">First Name</th>
+                <th style="width:10%;">Last Name</th>
+                <th style="width:4%;">Gender</th>
+                <th style="width:8%;">D.O.B</th>
+                <th style="width:12%;">Email</th>
+                <th style="width:7%">Mastery</th>
+                <th style="width:9%;">Subject</th>
+                <th style="width:12%;">Personal Email</th>
+                <th style="width:20%;">Qualifications</th>
+            </tr>
+
+            {% for teacher in teachers %}
+            <tr>
+                <td class="center">
+                    <input type="checkbox" name="delete_ids" value="{{ teacher[0] }}">
+                </td>
+                <td>{{ teacher[0] }}</td>
+                <td>{{ teacher[1] }}</td>
+                <td>{{ teacher[2] }}</td>
+                <td>{{ teacher[3] }}</td>
+
+                {% for details in info %}
+                    {% if details[0] == teacher[0] %}
+                        <td>{{ details[3] }}</td>
+                    {% endif %}
+                {% endfor %}
+
+                <td>{{ teacher[4] }}</td>
+
+                {% if teacher[7] == None %}
+                    <td>N/A</td>
+                {% else %}
+                    <td>{{ teacher[7] }}</td>
+                {% endif %}
+
+                <td>{{ teacher[6] }}</td>
+
+                {% for details in info %}
+                    {% if details[0] == teacher[0] %}
+                        <td>{{ details[2] }}</td>
+                        <td>{{ details[4] }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    
+</form>
+
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends "base_page.html" %}
+
+{% block head %}
+    <title>Studsight - Students</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_student.css') }}">
+{% endblock %}
+
+{% block body %}
+    <script src="{{ url_for('static', filename='add_student.js') }}"></script>
+    <script src="{{ url_for('static', filename='date_validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='subject_validation.js') }}"></script>
+    <div class="menu-bar">
+        <div class="back">
+            <a href="#" onclick="history.back()">Back </a>
+        </div>
+    </div>
+
+
+    <form id="studentForm" method="POST" action="{{ url_for('add_student') }}">
+        <h1>Add New Student</h1>
+        
+
+        <br>
+        <div class="tab">
+            <small>Be sure to fill out <strong>ALL</strong> details</small>
+            <h2>Student Info:</h2>
+            
+
+            <div class="input-container">
+                <input type="text" id="firstname" name="firstname" required>
+                <label for="firstname">First Name:</label><br>
+            </div>
+
+            <div class="input-container">
+                <input type="text" id="surname" name="surname" required>
+                <label for="surname">Surname:</label><br>
+            </div>
+            <br><br>
+            <div class="gender-options">Gender:
+                <input type="radio" id="male" name="gender" value="M" required>
+                <label for="male">Male</label>
+
+                <input type="radio" id="female" name="gender" value="F" required>
+                <label for="female">Female</label>
+            </div>
+            <br>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required><br><br>
+
+            <br><br>
+            <div class="mastery-options">MASTERY: 
+                <input type="radio" id="STEM" name="mastery" value="STEM" required>
+                <label for="STEM">STEM</label>
+                <input type="radio" id="ARTS" name="mastery" value="ARTS" required>
+                <label for="ARTS">ARTS</label>
+                <input type="radio" id="LAW" name="mastery" value="LAW" required>
+                <label for="LAW">LAW</label>
+                <input type="radio" id="FINANCE" name="mastery" value="FINANCE" required>
+                <label for="FINANCE">FINANCE</label>
+                <input type="radio" id="MED1" name="mastery" value="MED1" required>
+                <label for="MED1">MED1</label>
+                <input type="radio" id="MED2" name="mastery" value="MED2" required>
+                <label for="MED2">MED2</label>
+            </div>
+            <br><br>
+            <div class="year-options">YEAR: 
+                <input type="radio" id="yeargroup" name="yeargroup" value="12" required>
+                <label for="12">12:</label>
+                <input type="radio" id="yeargroup" name="yeargroup" value="13" required>
+                <label for="13">13:</label>
+            </div>
+            <br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email"><br><br>
+
+        </div>
+
+        <div class="tab">
+            <legend>Subject Choices:</legend>
+            <p>Pick at least 3 subjects in order</p>
+
+            <label for="first_subject">First Subject:</label>
+            <select id="first_subject" name="first_subject" required>
+                <option value="">-- Select Subject --</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject[0] }}">{{ subject[1] }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="second_subject">Second Subject:</label>
+            <select id="second_subject" name="second_subject" required>
+                <option value="">-- Select Subject --</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject[0] }}">{{ subject[1] }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="third_subject">Third Subject:</label>
+            <select id="third_subject" name="third_subject" required>
+                <option value="">-- Select Subject --</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject[0] }}">{{ subject[1] }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="fourth_subject">Fourth Subject (Optional):</label>
+            <select id="fourth_subject" name="fourth_subject">
+                <option value="">-- Select Subject --</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject[0] }}">{{ subject[1] }}</option>
+                {% endfor %}
+            </select><br><br>
+        </div>
+
+
+        <div class="tab">
+            <legend>Additional Info:</legend>
+            
+            <label for="parentname">Parent/Guardian Name:</label>
+            <input type="text" id="parentname" name="parentname" required><br><br>
+
+            <label for="parentnumber">Parent/Guardian Contact Number:</label>
+            <input type="tel" id="parentnumber" name="parentnumber" minlength="11" maxlength="11" required><br><br>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required><br><br>
+
+            <label for="nationality">Nationality:</label>
+            <input type="text" id="nationality" name="nationality" required><br><br>
+
+            <label for="countryofbirth">Country of Birth:</label>
+            <input type="text" id="countryofbirth" name="countryofbirth" required><br><br>
+
+            <label for="enrollmentdate">Enrollment Date:  </label>
+            <input type="date" id="enrollmentdate" name="enrollmentdate" required><br><br>
+        </div>
+
+        <div class="tab">
+            <legend>Medical Info:<br><br><small>If none, leave field empty</small></legend>
+
+            <label for="conditions">Conditions: </label>
+            <input placeholder="N/A" type="text" id="conditions" name="conditions"><br><br>
+
+            <label for="allergies">Allergies: </label>
+            <input placeholder="N/A" type="text" id="allergies" name="allergies"><br><br>
+
+            <label for="medications">Medications: </label>
+            <input placeholder="N/A" type="text" id="medications" name="medications"><br><br>
+
+            <label for="needs">Needs</label>
+            <input placeholder="N/A" type="text" id="needs" name="needs"><br><br>
+
+        </div>
+
+        
+        <div style="overflow:auto;">
+            <div style="float:right;">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            </div>
+        </div>
+
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;margin-top:40px;">
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        </div>
+
+
+
+        <br><br>
+        <button type="submit">Add Student</button><br><br><br>
+    </form>
+    <script src="{{ url_for('static', filename='add_student.js') }}"></script>
+    <script>
+        const subjectSelects = ['first_subject', 'second_subject', 'third_subject', 'fourth_subject'];
+        
+        subjectSelects.forEach(selectId => {
+            document.getElementById(selectId).addEventListener('change', updateSubjectOptions);
+        });
+        
+        function updateSubjectOptions() {
+            const selectedSubjects = subjectSelects
+                .map(id => document.getElementById(id).value)
+                .filter(value => value !== '');
+            
+            subjectSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                const currentValue = select.value;
+                
+                Array.from(select.options).forEach(option => {
+                    if (option.value === '') return;
+                    option.hidden = selectedSubjects.includes(option.value) && option.value !== currentValue;
+                });
+            });
+        }
+    </script>
+{% endblock %}
+
+
+

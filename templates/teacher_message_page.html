@@ -1,0 +1,58 @@
+{% extends "base_page.html" %}
+{% block head %}
+    <title>Studsight - Messages</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='department_page.css') }}">
+{% endblock %}
+{% block body %}
+    <section class="messages">
+        <div class="back">
+            <a href="{{ url_for('dashboard') }}">Back</a>
+        </div>          
+        <h1>CHOOSE MESSAGE BOARD</h1>
+
+
+        <a href="{{ url_for('messages')}}">
+            <article class="department">
+                <h2>GENERAL</h2>
+            </article>
+        </a>
+
+        {% if subject == 2 %}
+        <a href="{{ url_for('maths_messages')}}">
+            <article class="department">
+                <h2>MATHS</h2>
+            </article>
+        </a>
+        {% elif subject == 3 %}
+        <a href="{{ url_for('english_messages')}}">
+            <article class="department">
+                <h2>ENGLISH</h2>
+            </article>
+        </a>
+        {% elif subject == 4 %}
+        <a href="{{ url_for('science_messages')}}">
+            <article class="department">
+                <h2>SCIENCE</h2>
+            </article>
+        </a>
+
+        {% elif subject == 5 %}
+        <a href="{{ url_for('computing_messages')}}">
+            <article class="department">
+                <h2>COMPUTING</h2>
+            </article>
+        </a>
+
+
+        {% elif subject == 6 %}
+        <a href="{{ url_for('history_messages')}}">
+            <article class="department  ">
+                <h2>HISTORY</h2>
+            </article>
+        </a>
+
+        {% endif %}
+        
+    </section>
+{% endblock %}
+        

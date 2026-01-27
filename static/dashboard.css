@@ -1,0 +1,248 @@
+h1 {
+    font-size: 2.5rem;
+    color: hsl(230, 17%, 14%);
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 1px;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #858484;
+    color: hsl(230, 17%, 14%);
+    padding-top: var(--header-height); 
+}
+
+/* Flash message alerts */
+.alert {
+    padding: 15px 20px;
+    margin: 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.welcome h2{
+    font-size: 1.5rem;
+    margin: 0;
+    padding-left: 20px;
+    color: hsl(0, 0%, 5%);
+}
+
+
+
+.cards{
+    position: static;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50vh 50vh;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    height: auto;
+}
+
+
+.cards h2 {
+    color: hsl(230, 17%, 14%);
+    text-align: center;
+    margin: 0;
+}
+
+
+.cards .card {
+    border: groove;
+    border-width: 2px;
+    border-color: #858484;
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    will-change: transform, box-shadow;
+    text-decoration: none;
+    color: inherit;
+}
+
+
+.card-2 img,
+.card-4 img{
+    max-width: 90%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+
+.card-1 img{
+    max-width: 70%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+
+
+.card-3 img{
+    max-width: 90%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+
+
+
+.card-1 img{ max-width: 200px; }
+.card-2 img{ max-width: 200px; }
+.card-3 img{ max-width: 200px; }
+.card-4 img{ max-width: 200px; }
+
+.cards .card:hover,
+.cards .card:focus-within{
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .welcome h2 {
+        font-size: 1.2rem;
+        padding-left: 15px;
+    }
+    
+    .cards {
+        grid-template-columns: 1fr 1fr;
+        padding: 15px;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .welcome h2 {
+        font-size: 1rem;
+        padding-left: 10px;
+    }
+    
+    .cards {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .cards .card {
+        padding: 15px;
+        min-height: 250px;
+    }
+    
+    .card-1 img,
+    .card-2 img,
+    .card-3 img,
+    .card-4 img {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.4rem;
+        margin-bottom: 3px;
+    }
+    
+    .welcome h2 {
+        font-size: 0.9rem;
+        padding-left: 8px;
+    }
+    
+    .cards {
+        grid-template-columns: 1fr;
+        padding: 8px;
+        gap: 8px;
+    }
+    
+    .cards .card {
+        padding: 10px;
+        gap: 8px;
+        min-height: 200px;
+    }
+    
+    .cards h2 {
+        font-size: 0.9rem;
+    }
+    
+    .card-1 img,
+    .card-2 img,
+    .card-3 img,
+    .card-4 img {
+        max-width: 120px;
+    }
+}
+
+.cards .card:active{
+    transform: translateY(-2px) scale(0.998);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+}
+
+.cards .card:focus-within{
+    outline: 3px solid rgba(67, 82, 106, 0.12);
+    outline-offset: 4px;
+}
+
+@media (max-width: 800px) {
+    .cards{
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+        height: auto;
+    }
+}

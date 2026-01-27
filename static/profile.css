@@ -1,0 +1,195 @@
+.manage-account {
+    background-color: #f9f9f9;
+    padding: 20px;
+    width: 60vw;
+    margin-left: 17vw;
+    margin-top: 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 8px 8px;
+}
+
+.manage-account a {
+    background-color: #41302f;
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    font-size: 110%;
+    transition: background-color 0.3s;
+}
+
+.manage-account a:hover {
+    background-color: rgb(147, 136, 136);
+}
+
+section.profile-section {
+    background-color: #f9f9f9;
+    padding: 20px 20px 0 20px;
+    width: 60vw;
+    margin-top: 5vh;
+    margin-bottom: 0vh;
+    height: 90vh;
+    margin-left: 17vw;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+}
+
+section.profile-section h1{
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+section.profile-section p{
+    font-size: 95%;
+    color: #000000;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    margin-top: 3vh;
+    margin-left: 14vw;
+    display: flex;
+}
+
+section.profile-section img{
+    border-radius: 100%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-top: 20px;
+    margin-bottom: 2vh;
+}
+
+
+.back a{
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 8px;
+    font-size: 120%;
+    color: #030000;
+}
+
+
+.back a:link, .back a:visited {
+  background-color: #494545;
+  color: rgb(255, 255, 255);
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.back a:hover, .back a:active {
+  transform: translateX(-4px);
+  background-color: rgb(0, 0, 0);
+}
+
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+  section.profile-section {
+    width: 70vw;
+    margin-left: 15vw;
+    height: auto;
+    min-height: 80vh;
+  }
+  
+  section.profile-section h1 {
+    font-size: 1.7em;
+  }
+  
+  section.profile-section p {
+    font-size: 90%;
+    margin-left: 10vw;
+  }
+  
+  section.profile-section img {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  section.profile-section {
+    width: 95vw;
+    margin-left: 2.5vw;
+    margin-right: 2.5vw;
+    height: auto;
+    min-height: 70vh;
+    padding: 15px 15px 0 15px;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  section.profile-section h1 {
+    font-size: 1.4em;
+    margin-bottom: 8px;
+  }
+  
+  section.profile-section p {
+    font-size: 85%;
+    margin-left: 0;
+    margin-top: 2vh;
+    display: block;
+  }
+  
+  section.profile-section img {
+    width: 160px;
+    height: 160px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .back a {
+    font-size: 100%;
+    padding: 10px 15px;
+    margin-left: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  section.profile-section {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    height: auto;
+    min-height: 60vh;
+    padding: 12px 12px 0 12px;
+    margin-top: 3vh;
+    margin-bottom: 0;
+    border-radius: 6px 6px 0 0;
+  }
+  
+  section.profile-section h1 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+  }
+  
+  section.profile-section p {
+    font-size: 80%;
+    margin-left: 0;
+    margin-top: 1.5vh;
+    display: block;
+    line-height: 1.4;
+  }
+  
+  section.profile-section img {
+    width: 130px;
+    height: 130px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .back a {
+    font-size: 90%;
+    padding: 8px 12px;
+    margin-left: 3px;
+    border-radius: 4px;
+  }
+  
+  .back a:link, .back a:visited {
+    padding: 8px 12px;
+  }
+}

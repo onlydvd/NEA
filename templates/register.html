@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Studsight - Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+<body>
+    <div class="page">
+        <div class="container">
+            <h1 class="title">REGISTER</h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category|default('info') }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="POST">
+                <div class="input-row">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-row">
+                    <label for="password">Password (8-12 characters)</label>
+                    <input type="password" id="password" name="password" minlength="8" maxlength="12" required>
+                </div>
+                <div class="input-row">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" minlength="8" maxlength="12" required>
+                </div>
+
+               <button id="revealBtn">Generate Password PIN</button>
+
+                <div id="hiddenContent" style="display: none;">
+                    <div class="input-row">
+                        <label for="pin" style="font-size: 1.7vh;" >Your PIN (Keep this safe to reset password):</label>
+                        <input type="text" id="pin" name="pin" value="{{ pin }}" readonly required>
+                    </div>
+                <div class="input-row">
+                    <input type="checkbox" id="pin_confirm" name="pin_confirm" required>
+                    <label for="pin_confirm">I have saved my PIN safely</label>
+                </div>
+                </div>
+                <br><br>
+
+                <input class="btn" type="submit" value="Register">
+            </form>
+            <br>
+
+            <a href="{{ url_for('login') }}"><h2>Back to Login</h2></a>
+        </div>
+    </div>
+
+
+
+    <script>
+    document.getElementById("revealBtn").addEventListener("click", function () {
+        // Reveal the content
+        document.getElementById("hiddenContent").style.display = "block";
+
+        // Disable the button
+        this.disabled = true;
+        this.textContent = "Pin generated";
+    });
+    </script>
+
+
+</body>
+</html>

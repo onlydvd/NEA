@@ -1,0 +1,56 @@
+.post{
+    background-color: #fbf5f5;
+    padding: 15px;
+    margin: 30px 50px 20px 50px;
+    border-radius: 8px;
+}
+
+section.post-detail h1{
+    text-align: center;
+    color: #030000;
+    font-size: 400%;
+    margin-bottom: 10px;
+}
+
+section.post-detail a{
+    text-decoration: none;
+    color: #262525;
+}
+
+/* Responsive design for tablets and mobile */
+@media (max-width: 1024px) {
+  section.post-detail h1 {
+    font-size: 350%;
+  }
+  
+  .post {
+    margin: 25px 40px 15px 40px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  section.post-detail h1 {
+    font-size: 300%;
+    margin-bottom: 8px;
+  }
+  
+  .post {
+    margin: 20px 20px 12px 20px;
+    padding: 12px;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  section.post-detail h1 {
+    font-size: 220%;
+    margin-bottom: 6px;
+  }
+  
+  .post {
+    margin: 15px 10px 10px 10px;
+    padding: 10px;
+    border-radius: 6px;
+  }
+}

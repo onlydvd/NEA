@@ -1,0 +1,56 @@
+{% extends "base_page.html" %}
+{% block head %}
+    <title>Studsight - Import Students</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='import_students.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block body %}
+    <div class="menu-bar">
+        <div class="back">
+            <a href="{{ url_for('students') }}">Back</a>
+        </div>
+        <h1>IMPORT CSV FILE</h1>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul>
+        {% for category, message in messages %}
+        <li class="{% if category == 'error' %}error-message{% else %}success-message{% endif %}">
+            {{ message }}
+        </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+
+
+    <section>
+        <h3>Step 1: Download Template</h3>
+        <br><br>
+        <a href="{{ url_for('download_student_template') }}">
+            <button>Download CSV Template</button>
+        </a>
+    </section>
+
+    <hr>
+
+    <section>
+        <h3>Step 2: Upload Completed CSV</h3>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="csv_file" accept=".csv" required>
+            <br><br>
+            <button type="submit">Import Students</button>
+        </form>
+    </section>
+
+    <!-- FLASH MESSAGES -->
+    <style>
+        .error-message { color: red; }
+        .success-message { color: green; }
+    </style>
+    
+{% endblock %}  
+
+
