@@ -29,7 +29,7 @@
 
                 <!-- If you still want "Detentions Today", make sure your route sends a variable called detentions_today -->
                 <p class="student-sub">
-                    Student ID: <span class="pill">{{ student_id}}</span>
+                    Student ID: <span class="pill">{{ student[0]}}</span>
                 </p>
 
                 <div class="actions">
@@ -65,9 +65,7 @@
             </div>
         </section>
 
-        <!-- =========================
-             2) DETENTIONS SECTION
-        ========================== -->
+        
         <section class="card">
             <div class="card-header">
                 <h3>Detentions</h3>
@@ -94,9 +92,7 @@
             </div>
         </section>
 
-        <!-- =========================
-             3) WITHDRAWALS SECTION
-        ========================== -->
+        
         <section class="card">
             <div class="card-header">
                 <h3>Withdrawals</h3>
@@ -123,9 +119,7 @@
             </div>
         </section>
 
-        <!-- =========================
-             4) ATTENDANCE SECTION
-        ========================== -->
+
         <section class="card">
             <div class="card-header">
                 <h3>Attendance</h3>
@@ -165,5 +159,28 @@
         </section>
     </div>
 
+    <script>
+        window.chartData = {
+            prevHP: {{ prev_hp }},
+            currHP: {{ curr_hp }},
+            prevDet: {{ prev_detentions }},
+            currDet: {{ curr_detentions }},
+            prevWd: {{ prev_wd }},
+            currWd: {{ curr_wd }},
+            prevPresent: {{ prev_present }},
+            currPresent: {{ curr_present }},
+            prevAbsent: {{ prev_absent }},
+            currAbsent: {{ curr_absent }},
+            prevLate: {{ prev_late }},
+            currLate: {{ curr_late }}
+        };
+    </script>
+
+    <!-- Load external JavaScript for chart initialization -->
     <script src="{{ url_for('static', filename='analyse.js') }}"></script>
+    
+    <!-- Initialize charts after script is loaded -->
+    <script>
+        initializeCharts();
+    </script>
 {% endblock %}

@@ -62,22 +62,15 @@
                     </select>
                 </div>
 
-                <!-- Assessment Type Dropdown -->
-                <!-- Assessment types include Test, Exam, and Homework -->
-                <!-- Note: Maximum 3 assessments of each type per subject are allowed -->
                 <div class="form-group">
                     <label for="type">Assessment Type</label>
                     <select id="type" name="type" required>
                         <option value="">-- Select Type --</option>
-                        <option value="Test">Test</option>
-                        <option value="Exam">Exam</option>
-                        <option value="Homework">Homework</option>
+                        <option value="Test">Endpoint</option>
+                        <option value="Exam">Midpoint</option>
                     </select>
                 </div>
 
-                <!-- Date Input Field -->
-                <!-- Date must be within the past 2 years and cannot be in the future -->
-                <!-- Client-side and server-side validation ensures data integrity -->
                 <div class="form-group">
                     <label for="date">Date</label>
                     <input type="date" id="date" name="date" required>

@@ -14,6 +14,9 @@
         <h1>Student Assessments</h1>
     </div>
 
+
+
+
     <!-- Page layout -->
     <div class="page">
 
@@ -37,6 +40,21 @@
 
         <!-- Assessments Section -->
         <section class="card">
+
+
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <br><br>
+
             <div class="card-header">
                 <h3>Assessment Records</h3>
                 <p>All logged assessments for this student</p>

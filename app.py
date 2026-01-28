@@ -132,7 +132,6 @@ def build_weekly_summary_prompt(cursor, student_id: int) -> str:
         f"Year {s[5]}, Gender: {s[3]}, Mastery: {s[4]}."
     )
 
-    # -------- ATTENDANCE ANALYSIS (Week vs Week Comparison) --------
     # Fetch attendance records from last 14 days, ordered most recent first
     cursor.execute("""
         SELECT Date, Status
@@ -169,7 +168,6 @@ def build_weekly_summary_prompt(cursor, student_id: int) -> str:
         f"Absent {lw_abs}, Late {lw_late}."
     )
 
-    # -------- BEHAVIOUR ANALYSIS (Week vs Week Comparison) --------
     # Fetch behaviour events from last 14 days with type information
     cursor.execute("""
         SELECT Date, Period, bt.Type
@@ -210,7 +208,6 @@ def build_weekly_summary_prompt(cursor, student_id: int) -> str:
         f"Last week – {sum(lw_counts.values())} events {dict(lw_counts)}."
     )
 
-    # -------- BEHAVIOUR TIMING TRENDS --------
     # Identify which period of day has most behaviour incidents (algorithmic insight)
     period_trend = ""
     if tw_periods:
@@ -218,7 +215,6 @@ def build_weekly_summary_prompt(cursor, student_id: int) -> str:
         worst_period = max(tw_periods, key=tw_periods.get)
         period_trend = f"Most behaviour incidents this week occurred during Period {worst_period}."
 
-    # -------- CONSTRUCT FINAL PROMPT --------
     # Combine all data into a structured prompt for the AI
     prompt = (
         f"{student_line}\n"
@@ -248,12 +244,12 @@ def build_weekly_summary_prompt(cursor, student_id: int) -> str:
 def weekly_summary_generator(prompt: str) -> str:
     # Make API call to OpenAI with system and user prompts
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # Use GPT-3.5 for balance of quality and cost
+        model="gpt-3.5-turbo", 
         messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},  # Define AI behavior
+            {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": prompt}  # Provide student data
         ],
-        temperature=0.4,  # Lower temperature = more deterministic/consistent (0=always same, 1=random)
+        temperature=0.4,
         max_tokens=300  # Limit response length
     )
     # Extract and clean the response text
@@ -397,14 +393,15 @@ def register():
     session.pop('user', None)  # Ensure user not already logged in
     conn = sqlite3.connect('accounts.db')
     cursor = conn.cursor()
-    pins_result = cursor.execute("SELECT pin FROM users").fetchall()
-    pins = [p[0] for p in pins_result]  # Extract pins from tuples
 
+    all_pins = cursor.execute("SELECT pin FROM users").fetchall()
+    pins = [p[0] for p in all_pins]
     pin = generate_pin()
     while pin in pins:
         pin = generate_pin()
 
     conn.close()
+
 
     if request.method == 'POST':
         email = request.form.get('email').lower().strip()
@@ -412,13 +409,7 @@ def register():
         # Generate a NEW pin for this registration
         conn = sqlite3.connect('accounts.db')
         cursor = conn.cursor()
-        pins_result = cursor.execute("SELECT pin FROM users").fetchall()
-        pins = [p[0] for p in pins_result]
         
-        new_pin = generate_pin()
-        while new_pin in pins:
-            new_pin = generate_pin()
-        conn.close()
         
         conn = sqlite3.connect('schooldata.db')
         cursor = conn.cursor()
@@ -440,18 +431,24 @@ def register():
                 flash('Account already exists. Please login.')
                 return redirect(url_for('login'))
             else:
-                password = request.form.get('password')
-                confiirm_password = request.form.get('confirm_password')
-                if password != confiirm_password:
+                password = request.form.get('password', '').strip()
+                confirm_password = request.form.get('confirm_password', '').strip()
+                
+                # Validate password
+                if not password:
+                    flash('Password cannot be empty.')
+                    return redirect(url_for('register'))
+                elif len(password) < 6:
+                    flash('Password must be at least 6 characters.')
+                    return redirect(url_for('register'))
+                elif password != confirm_password:
                     flash('Passwords do not match. Please try again.')
                     return redirect(url_for('register'))
                 
                 conn2 = sqlite3.connect('accounts.db')
                 cursor = conn2.cursor()
                 
-                
-                
-                cursor.execute("INSERT INTO users (email, password, pin) VALUES (?, ?, ?)", (email, password, new_pin))
+                cursor.execute("INSERT INTO users (email, password, pin) VALUES (?, ?, ?)", (email, password, pin))
                 conn2.commit()
                 conn2.close()
                 flash('Registration successful! Please login.')
@@ -476,8 +473,8 @@ def login():
     """Authenticate user credentials and establish session"""
     session.pop('user', None)  # Clear any previous session
     if request.method == 'POST':
-        email = request.form.get('email').lower()
-        password = request.form.get('password')
+        email = request.form.get('email', '').lower().strip()
+        password = request.form.get('password', '').strip()
 
         conn = sqlite3.connect('schooldata.db')
         cursor = conn.cursor()
@@ -531,22 +528,25 @@ def forgot_password():
         email = request.form.get('email', '').strip().lower()
         pin = request.form.get('pin', '').strip()
         
-        # Debug: check what we're querying
-        cursor.execute("SELECT * FROM users WHERE email=?", (email,))
-        user_check = cursor.fetchone()
-        
-        if user_check:
-            # User exists, now check PIN
-            if str(user_check[3]) == str(pin):
-                connection.close()
-                session['reset_email'] = email
-                return redirect(url_for('reset_password'))
-            else:
-                connection.close()
-                flash('Invalid PIN. Please try again.')
+        # Validate inputs
+        if not email or not pin:
+            flash('Email and PIN are required.')
         else:
-            connection.close()
-            flash('Invalid email. Please try again.')
+            cursor.execute("SELECT * FROM users WHERE email=?", (email,))
+            user_check = cursor.fetchone()
+            
+            if user_check:
+                # User exists, now check PIN
+                stored_pin = str(user_check[3]).strip() if user_check[3] else ""
+                if stored_pin == str(pin):
+                    connection.close()
+                    session['reset_email'] = email
+                    return redirect(url_for('reset_password'))
+                else:
+                    flash('Invalid PIN. Please try again.')
+            else:
+                flash('Invalid email. Please try again.')
+    connection.close()
     return render_template("forgot_password.html")
 
 
@@ -559,19 +559,32 @@ def forgot_password():
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
     """Update password in accounts.db after verification"""
+    # Check if user came from forgot_password verification
+    if 'reset_email' not in session:
+        flash('Please verify your email and PIN first.')
+        return redirect(url_for('forgot_password'))
+    
     connection = sqlite3.connect("accounts.db")
     cursor = connection.cursor()
     if request.method == 'POST':
-        new_password = request.form.get('new_password')
-        confirm_password = request.form.get('confirm_password')
-
-        if new_password == confirm_password:
+        new_password = request.form.get('new_password', '').strip()
+        confirm_password = request.form.get('confirm_password', '').strip()
+        
+        # Validate password
+        if not new_password:
+            flash('Password cannot be empty.')
+        elif len(new_password) < 6:
+            flash('Password must be at least 6 characters.')
+        elif new_password == confirm_password:
             cursor.execute("UPDATE users SET password=? WHERE email=?", (new_password, session.get('reset_email')))
             connection.commit()
+            connection.close()
+            session.pop('reset_email', None)  # Clear reset session
             flash('Password reset successful! Please login.')
             return redirect(url_for('login'))
         else:
             flash('Passwords do not match. Please try again.')
+    connection.close()
     return render_template("reset_password.html")
 
 
@@ -1784,23 +1797,21 @@ def view_student(student_id):
 
 
 # ROUTE: /flag_student (Flag Student for Help)
-# PURPOSE: Send a flag message to the general message board
+# PURPOSE: Send a flag message to the subject-specific message board
 # METHOD: POST (AJAX)
 # PARAMETERS:
 # - student_id: Student ID to flag
+
 @app.route('/flag_student/<int:student_id>', methods=['POST'])
 def flag_student(student_id):
-    """
-    Flag a student for help by posting a message to the general message board
-    """
     if 'user' not in session:
-        return jsonify({'success': False, 'error': 'Not logged in'}), 401
+        return redirect(url_for('login'))
     
     try:
         connection = sqlite3.connect("schooldata.db")
         cursor = connection.cursor()
         
-        # Get student name
+        # Get student name and verify student exists
         cursor.execute("SELECT Firstname, Surname FROM Students WHERE StudentID=?", (student_id,))
         student = cursor.fetchone()
         if not student:
@@ -1809,27 +1820,55 @@ def flag_student(student_id):
         
         student_name = f"{student[0]} {student[1]}"
         
-        # Get teacher ID
-        cursor.execute("SELECT TeacherID FROM Teachers WHERE Email=?", (session['user'],))
+        # Get teacher info (ID and SubjectID) to identify which subject board to post to
+        cursor.execute("SELECT TeacherID, SubjectID FROM Teachers WHERE Email=?", (session['user'],))
         teacher = cursor.fetchone()
+        if not teacher:
+            connection.close()
+            return jsonify({'success': False, 'error': 'Teacher not found'}), 404
+        
         teacher_id = teacher[0]
+        subject_id = teacher[1]  # Subject the teacher teaches
+        
+        # Get subject name for logging purposes
+        cursor.execute("SELECT Subjectname FROM Subjects WHERE SubjectID=?", (subject_id,))
+        subject_result = cursor.fetchone()
+        subject_name = subject_result[0] if subject_result else "Unknown"
         
         # Create message text
-        message_text = f"{student_name} Flagged for help"
+        message_text = f"{student_name} flagged for help in {subject_name}"
+        message_title = f"⚠️ {subject_name} - Student Flag"
         
-        # Post to general message board (Posts table)
+        # Determine which subject-specific table to insert into based on SubjectID
+        subject_table_map = {
+            1: 'M_Posts',      # Mathematics
+            2: 'E_Posts',      # English
+            3: 'S_Posts',      # Science
+            4: 'C_Posts',      # Computing
+            5: 'H_Posts'       # History
+        }
+        
+        # Get the correct table name for this subject
+        table_name = subject_table_map.get(subject_id)
+        
+        if not table_name:
+            connection.close()
+            return jsonify({'success': False, 'error': 'Invalid subject assigned to teacher'}), 400
+        
+        # Get current date and time
         today = datetime.date.today()
         now = datetime.datetime.now().time()
         
-        cursor.execute("""
-            INSERT INTO Posts (Title, Content, Date, Time, TeacherID)
+        # Insert flag message into the appropriate subject-specific message board table
+        cursor.execute(f"""
+            INSERT INTO {table_name} (Title, Content, Date, Time, TeacherID)
             VALUES (?, ?, ?, ?, ?)
-        """, (f"⚠️ Student Flag", message_text, today, str(now), teacher_id))
+        """, (message_title, message_text, today, str(now), teacher_id))
         
         connection.commit()
         connection.close()
         
-        return jsonify({'success': True, 'message': f'{student_name} has been flagged for help'}), 200
+        return jsonify({'success': True, 'message': f'{student_name} has been flagged for help in {subject_name}'}), 200
     
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
@@ -2663,8 +2702,7 @@ def log_assessment(student_id):
                     assessment_date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
                     today = datetime.date.today()
                     two_years_ago = today - timedelta(days=365*2)
-                    
-                    # Check if date is before 2 years ago
+
                     if assessment_date < two_years_ago:
                         flash(f'Assessment date cannot be before {two_years_ago.strftime("%B %d, %Y")}. Please select a date from the past 2 years.', 'error')
                     # Check if date is in the future (after today)
@@ -2672,8 +2710,7 @@ def log_assessment(student_id):
                         flash('Assessment date cannot be in the future. Please select today or an earlier date.', 'error')
                     else:
                         try:
-                            # VALIDATION: Check if maximum 3 assessments of this type for this subject already exist
-                            # This prevents logging more than 3 records per assessment type per subject per student
+                            # Check if maximum 3 assessments of this type for this subject already exist
                             cursor.execute("""
                                 SELECT COUNT(*) FROM Assessments 
                                 WHERE StudentID=? AND SubjectID=? AND Type=?
@@ -2682,7 +2719,7 @@ def log_assessment(student_id):
                             
                             # If already 3 or more assessments of this type exist, reject the new entry
                             if assessment_count >= 3:
-                                flash(f'Cannot log more than 3 {assessment_type} assessments for this subject. Current count: {assessment_count}. Please delete or update an existing record.', 'error')
+                                flash(f'Cannot log more than 3 {assessment_type} assessments for this subject. Current count: {assessment_count}.', 'error')
                             else:
                                 # Insert into Assessments table
                                 cursor.execute("""
@@ -2695,7 +2732,6 @@ def log_assessment(student_id):
                                 assessment_id = cursor.lastrowid
                                 
                                 # Map assessment type to the corresponding column in Scores table
-                                # This maps the assessment type (Test, Exam, Homework) to database column names
                                 assessment_column_map = {
                                     'midpoint1': 'Assessment1',
                                     'midpoint2': 'Assessment2',
@@ -2827,7 +2863,7 @@ def analyse(student_id):
             year -= 1
             last_week = datetime.date(year, 12, 28).isocalendar()[1]
 
-        # Get date ranges using YOUR function
+        # Get date ranges using function
         days_this_week = days_in_week(year, this_week)
         days_last_week = days_in_week(year, last_week)
 

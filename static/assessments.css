@@ -63,6 +63,28 @@
     border: 3px solid rgba(0,0,0,0.08);
 }
 
+
+
+.alert {
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    border: 1px solid;
+}
+
+.alert-success {
+    background: #d3f9d8;
+    color: #2b8a3e;
+    border-color: #51cf66;
+}
+
+.alert-error {
+    background: #ffe0e0;
+    color: #c92a2a;
+    border-color: #ff8787;
+}
+
 .student-name {
     margin: 0;
     font-size: 22px;
