@@ -63,12 +63,11 @@
     </div>
 
     <script>
-        // Map behaviour type IDs to constraints
         const typeConstraints = {
-            '1': { name: 'Housepoint', maxAmount: null, disabled: false, hint: 'No limit (positive numbers only)' },      // Housepoint
-            '2': { name: 'Demerit', maxAmount: null, disabled: false, hint: 'No limit (positive numbers only)' },          // Demerit
-            '3': { name: 'Detention', maxAmount: 2, disabled: false, hint: 'Maximum 2 detentions can be set' },             // Detention
-            '4': { name: 'Withdrawal', maxAmount: 1, disabled: true, hint: 'Amount is automatically set to 1' }             // Withdrawal
+            '1': { name: 'Housepoint', maxAmount: 50, disabled: false, hint: 'Positive numbers only' },      
+            '2': { name: 'Demerit', maxAmount: 2, disabled: false, hint: 'Positive numbers only' },          
+            '3': { name: 'Detention', maxAmount: 2, disabled: false, hint: 'Maximum 2 detentions can be set' },            
+            '4': { name: 'Withdrawal', maxAmount: 1, disabled: true, hint: 'Amount is automatically set to 1' }             
         };
 
         function updateAmountConstraints() {

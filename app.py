@@ -20,8 +20,9 @@ import os
 # Load environment variables from .env file (API keys, secrets, etc.)
 load_dotenv()
 
-# Initialize OpenAI client with API key from environment
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+# Initialize OpenAI client with API key from environment (optional)
+openai_api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=openai_api_key) if openai_api_key else None
 
 
 app = Flask(__name__)  # Create Flask application instance
@@ -265,18 +266,6 @@ def weekly_summary_generator(prompt: str) -> str:
 # UTILITY FUNCTIONS - Helper functions used throughout the application
 
 def days_in_week(year, week):
-    """
-    ALGORITHM: Convert ISO week number to list of date strings
-    
-    PURPOSE: Returns all 7 dates in a given ISO week
-    - ISO weeks start on Monday and end on Sunday
-    - Used for timetable and scheduling features
-    
-    INPUT: year (int), week (int) - ISO year and week number
-    OUTPUT: List of 7 date strings in YYYY-MM-DD format
-    
-    EXAMPLE: days_in_week(2026, 3) -> ['2026-01-12', '2026-01-13', ..., '2026-01-18']
-    """
     # ISO weeks start on Monday (weekday=1)
     start = date.fromisocalendar(year, week, 1)
     # Generate all 7 days by adding 0-6 days to the start date
@@ -588,10 +577,8 @@ def reset_password():
 
 
 
-# =====================================================================
 # ROUTE: /logout (Session Termination)
 # PURPOSE: Clears user session and redirects to home
-# =====================================================================
 @app.route('/logout')
 def logout():
     """Clear session and redirect to home page"""
@@ -714,18 +701,10 @@ def manage_account(id):
 # - Periods 1 & 5: Show mastery group students
 # - Periods 2-4, 6-8: Show subject class students
 # DYNAMIC: Auto-detects current period using get_period()
+
+
 @app.route('/class')
 def current_class():
-    """
-    ROUTE: /class (Current Class & Attendance)
-    PURPOSE: Display students in teacher's class for current period with attendance tracking
-    FEATURES: 
-    - Get current period based on time
-    - Retrieve students in teacher's class for this period
-    - Display attendance status for each student
-    - Show previous attendance records for today
-    PERMISSIONS: Logged-in teachers only
-    """
     if 'user' in session:
         try:
             connection = sqlite3.connect("schooldata.db")
@@ -828,23 +807,15 @@ def current_class():
             # Add success flash message
             flash(f'Loaded {class_type.capitalize()} class: {class_name} (Period {period_num})', 'success')
             
-            return render_template("class.html", 
-                                 students=students_data, 
-                                 class_name=class_name, 
-                                 class_type=class_type,
-                                 teacher_name=teacher_name, 
-                                 teacher_id=teacher_id,
-                                 period=period_num,
-                                 today=today.isoformat(),
-                                 id=teacher_id,
-                                 firstname=firstname,
-                                 surname=surname,
-                                 email=session['user'],
-                                 role='T')
-        
+            return render_template("class.html", students=students_data, class_name=class_name, 
+                                   class_type=class_type, teacher_name=teacher_name, teacher_id=teacher_id,
+                                   period=period_num, today=today.isoformat(), id=teacher_id,
+                                   firstname=firstname, surname=surname, email=session['user'])
+
         except Exception as e:
             flash(f'Error loading class: {str(e)}', 'error')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('dashboard')) 
+
     else:
         return redirect(url_for('login'))
 
@@ -854,11 +825,11 @@ def current_class():
 # METHOD: POST (JSON)
 # INPUT: student_id, status (Present/Absent/Late), period, date
 # DATABASE: Inserts/Updates PeriodAttendance table
+
 @app.route('/log_attendance', methods=['POST'])
 def log_attendance():
     if 'user' not in session:
-        return jsonify({'error': 'Not authenticated'}), 401
-    
+        return redirect(url_for('login'))
     try:
         data = request.get_json()
         student_id = data.get('student_id')
@@ -2526,7 +2497,6 @@ def final_delete_students():
 
 
 
-# =====================================================================
 # ROUTE: /log_behaviour (Record Student Behaviour Event)
 # PURPOSE: Teachers log positive/negative behaviour incidents
 # BEHAVIOUR TYPES:
@@ -2534,7 +2504,6 @@ def final_delete_students():
 # - 3: Detention (disciplinary)
 # - 4: Withdrawal (absence)
 # FEATURES: Auto-assigns current period, allows multiple entries at once
-# =====================================================================
 @app.route('/log_behaviour/<int:student_id>', methods=['GET', 'POST'])
 def log_behaviour(student_id):
     if 'user' in session:
@@ -2572,11 +2541,9 @@ def log_behaviour(student_id):
         return redirect(url_for('login'))
 
 
-# =====================================================================
 # ROUTE: /assessments/<student_id> (View Student Assessments)
 # PURPOSE: Display all assessment records for a student
 # DISPLAYS: Assessment type, score, subject, date in reverse chronological order
-# =====================================================================
 @app.route('/assessments/<int:student_id>', methods=['GET', 'POST'])
 def assessments(student_id):
     if 'user' not in session:
@@ -2638,7 +2605,6 @@ def assessments(student_id):
         connection.close()
 
 
-# =====================================================================
 # ROUTE: /log_assessment (Record Student Assessment)
 # PURPOSE: Log assessment scores and update Scores table
 # ASSESSMENT TYPES: midpoint1, midpoint2, endpoint (only 3 types)
@@ -2646,7 +2612,6 @@ def assessments(student_id):
 # 1. Insert into Assessments table
 # 2. Update Scores table with assessment ID (Assessment1/2/3 columns)
 # DATABASE: Creates entries in Assessments and updates Scores
-# =====================================================================
 @app.route('/log_assessment/<int:student_id>', methods=['GET', 'POST'])
 def log_assessment(student_id):
     if 'user' not in session:
@@ -2671,10 +2636,12 @@ def log_assessment(student_id):
             return redirect(url_for('students'))
         
         # Get only the subjects that the student is taking
+        # Students can take 4 subjects (Subject1 through Subject4) stored in the Students table
         subject_ids = [student[8], student[9], student[10], student[11]]
-        # Filter out None values
+        # Filter out None values - students may not be taking all 4 available subjects
         subject_ids = [sid for sid in subject_ids if sid is not None]
         
+        # Query database for subject information for only the subjects this student is taking
         if subject_ids:
             placeholders = ','.join('?' * len(subject_ids))
             cursor.execute(f"SELECT SubjectID, Subjectname FROM Subjects WHERE SubjectID IN ({placeholders}) ORDER BY Subjectname", subject_ids)
@@ -2691,59 +2658,88 @@ def log_assessment(student_id):
             if not all([subject_id, assessment_type, date, score]):
                 flash('Please fill in all fields', 'error')
             else:
+                # Validate date restrictions
                 try:
-                    # Insert into Assessments table
-                    cursor.execute("""
-                        INSERT INTO Assessments (StudentID, SubjectID, Type, Date, Score)
-                        VALUES (?, ?, ?, ?, ?)
-                    """, (student_id, subject_id, assessment_type, date, score))
-                    connection.commit()
+                    assessment_date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
+                    today = datetime.date.today()
+                    two_years_ago = today - timedelta(days=365*2)
                     
-                    # Get the assessment ID that was just created
-                    assessment_id = cursor.lastrowid
-                    
-                    # Map assessment type to the corresponding column in Scores table
-                    assessment_column_map = {
-                        'midpoint1': 'Assessment1',
-                        'midpoint2': 'Assessment2',
-                        'endpoint': 'Assessment3'
-                    }
-                    
-                    assessment_column = assessment_column_map.get(assessment_type)
-                    
-                    if assessment_column:
-                        # Check if a score record exists for this student and subject
-                        cursor.execute("""
-                            SELECT ScoreID FROM Scores 
-                            WHERE StudentID=? AND SubjectID=?
-                        """, (student_id, subject_id))
-                        score_record = cursor.fetchone()
-                        
-                        if score_record:
-                            # Update existing record with the assessment ID
-                            cursor.execute(f"""
-                                UPDATE Scores 
-                                SET {assessment_column}=? 
-                                WHERE StudentID=? AND SubjectID=?
-                            """, (assessment_id, student_id, subject_id))
-                        else:
-                            # Create new score record with this assessment
-                            assessment_data = {
-                                'Assessment1': assessment_id if assessment_column == 'Assessment1' else None,
-                                'Assessment2': assessment_id if assessment_column == 'Assessment2' else None,
-                                'Assessment3': assessment_id if assessment_column == 'Assessment3' else None
-                            }
+                    # Check if date is before 2 years ago
+                    if assessment_date < two_years_ago:
+                        flash(f'Assessment date cannot be before {two_years_ago.strftime("%B %d, %Y")}. Please select a date from the past 2 years.', 'error')
+                    # Check if date is in the future (after today)
+                    elif assessment_date > today:
+                        flash('Assessment date cannot be in the future. Please select today or an earlier date.', 'error')
+                    else:
+                        try:
+                            # VALIDATION: Check if maximum 3 assessments of this type for this subject already exist
+                            # This prevents logging more than 3 records per assessment type per subject per student
                             cursor.execute("""
-                                INSERT INTO Scores (StudentID, SubjectID, Assessment1, Assessment2, Assessment3)
-                                VALUES (?, ?, ?, ?, ?)
-                            """, (student_id, subject_id, assessment_data['Assessment1'], assessment_data['Assessment2'], assessment_data['Assessment3']))
-                        
-                        connection.commit()
-                    
-                    flash('Assessment logged successfully', 'success')
-                    return redirect(url_for('assessments', student_id=student_id))
-                except Exception as e:
-                    flash(f'Error logging assessment: {str(e)}', 'error')
+                                SELECT COUNT(*) FROM Assessments 
+                                WHERE StudentID=? AND SubjectID=? AND Type=?
+                            """, (student_id, subject_id, assessment_type))
+                            assessment_count = cursor.fetchone()[0]
+                            
+                            # If already 3 or more assessments of this type exist, reject the new entry
+                            if assessment_count >= 3:
+                                flash(f'Cannot log more than 3 {assessment_type} assessments for this subject. Current count: {assessment_count}. Please delete or update an existing record.', 'error')
+                            else:
+                                # Insert into Assessments table
+                                cursor.execute("""
+                                    INSERT INTO Assessments (StudentID, SubjectID, Type, Date, Score)
+                                    VALUES (?, ?, ?, ?, ?)
+                                """, (student_id, subject_id, assessment_type, date, score))
+                                connection.commit()
+                                
+                                # Get the assessment ID that was just created
+                                assessment_id = cursor.lastrowid
+                                
+                                # Map assessment type to the corresponding column in Scores table
+                                # This maps the assessment type (Test, Exam, Homework) to database column names
+                                assessment_column_map = {
+                                    'midpoint1': 'Assessment1',
+                                    'midpoint2': 'Assessment2',
+                                    'endpoint': 'Assessment3'
+                                }
+                                
+                                assessment_column = assessment_column_map.get(assessment_type)
+                                
+                                if assessment_column:
+                                    # Check if a score record exists for this student and subject
+                                    cursor.execute("""
+                                        SELECT ScoreID FROM Scores 
+                                        WHERE StudentID=? AND SubjectID=?
+                                    """, (student_id, subject_id))
+                                    score_record = cursor.fetchone()
+                                    
+                                    if score_record:
+                                        # Update existing record with the assessment ID
+                                        cursor.execute(f"""
+                                            UPDATE Scores 
+                                            SET {assessment_column}=? 
+                                            WHERE StudentID=? AND SubjectID=?
+                                        """, (assessment_id, student_id, subject_id))
+                                    else:
+                                        # Create new score record with this assessment
+                                        # Only populate the appropriate assessment column based on type
+                                        assessment_data = {
+                                            'Assessment1': assessment_id if assessment_column == 'Assessment1' else None,
+                                            'Assessment2': assessment_id if assessment_column == 'Assessment2' else None,
+                                            'Assessment3': assessment_id if assessment_column == 'Assessment3' else None
+                                        }
+                                        cursor.execute("""
+                                            INSERT INTO Scores (StudentID, SubjectID, Assessment1, Assessment2, Assessment3)
+                                            VALUES (?, ?, ?, ?, ?)
+                                        """, (student_id, subject_id, assessment_data['Assessment1'], assessment_data['Assessment2'], assessment_data['Assessment3']))
+                                    
+                                    connection.commit()
+                                
+                                flash('Assessment logged successfully', 'success')
+                                return redirect(url_for('assessments', student_id=student_id))
+                        except Exception as e:
+                            flash(f'Error logging assessment: {str(e)}', 'error')
+                except ValueError:
+                    flash('Invalid date format', 'error')
 
         return render_template(
             "log_assessment.html", 
@@ -2756,12 +2752,10 @@ def log_assessment(student_id):
         connection.close()
 
 
-# =====================================================================
 # ROUTE: /students/analysis (Student Analysis Selection)
 # PURPOSE: List all students for detailed week-by-week analysis
 # DISPLAYS: Attendance and behaviour comparison (this week vs last week)
 # SEARCH: Filter by name, email, year group, mastery
-# =====================================================================
 @app.route('/students/analysis')
 def analysis():
     connection = sqlite3.connect("schooldata.db")
@@ -2799,17 +2793,15 @@ def analysis():
 
 
 
-# =====================================================================
 # ROUTE: /analyse/<student_id> (Detailed Student Analysis)
 # PURPOSE: Show this week vs last week comparison of:
 # - Attendance (present, absent, late)
 # - Behaviour (house points, detentions, withdrawals)
 # ALGORITHM: Compares ISO week data (Mon-Sun) automatically
 # TEMPLATE: Displays metrics and trends for teacher review
-# =====================================================================
 @app.route('/analyse/<int:student_id>')
 def analyse(student_id):
-    # 1) Must be logged in
+    # Must be logged in
     if 'user' not in session:
         return redirect(url_for('login'))
 
@@ -2817,7 +2809,7 @@ def analyse(student_id):
     cursor = conn.cursor()
 
     try:
-        # 2) Get logged-in teacher
+        # Get logged-in teacher
         cursor.execute("SELECT * FROM Teachers WHERE Email=?", (session['user'],))
         teacher = cursor.fetchone()
         if not teacher:
@@ -2825,7 +2817,7 @@ def analyse(student_id):
 
         teacher_id = teacher[0]
 
-        # 3) Work out this week and last week (ISO weeks)
+        # Work out this week and last week (ISO weeks)
         today = datetime.date.today()
         this_week = today.isocalendar()[1]
         year = today.year
@@ -2835,7 +2827,7 @@ def analyse(student_id):
             year -= 1
             last_week = datetime.date(year, 12, 28).isocalendar()[1]
 
-        # 4) Get date ranges using YOUR function
+        # Get date ranges using YOUR function
         days_this_week = days_in_week(year, this_week)
         days_last_week = days_in_week(year, last_week)
 
@@ -2843,7 +2835,7 @@ def analyse(student_id):
         this_start, this_end = days_this_week[0], days_this_week[-1]
         last_start, last_end = days_last_week[0], days_last_week[-1]
 
-        # 5) Get student + info
+        # Get student + info
         cursor.execute("SELECT * FROM Students WHERE StudentID=?", (student_id,))
         student = cursor.fetchone()
         if not student:
@@ -2914,12 +2906,10 @@ def analyse(student_id):
 
 
 
-# =====================================================================
 # ROUTE: /smart_generator (AI Summary Selection)
 # PURPOSE: List students available for AI-powered analysis
 # FEATURES: Search by name, email, year, mastery
 # AI CAPABILITY: Uses OpenAI to generate weekly summaries
-# =====================================================================
 @app.route('/smart_generator')
 def smart_summary():
     connection = sqlite3.connect("schooldata.db")
@@ -2951,7 +2941,6 @@ def smart_summary():
 
 
 
-# =====================================================================
 # ROUTE: /smart_analysis/<student_id> (AI-Generated Student Summary)
 # PURPOSE: Generate AI-powered weekly analysis of student performance
 # ALGORITHM:
@@ -2959,7 +2948,6 @@ def smart_summary():
 # 2. Send to OpenAI GPT-3.5-turbo for analysis
 # 3. Display generated summary with recommendations
 # AI INSIGHTS: Compares this week vs last week, identifies patterns
-# =====================================================================
 @app.route('/smart_analysis/<int:student_id>', methods=["GET", "POST"])
 def smart(student_id):
     if "user" not in session:

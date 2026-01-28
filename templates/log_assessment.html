@@ -50,6 +50,8 @@
             {% endwith %}
 
             <form method="POST" class="assessment-form">
+                <!-- Subject Selection Dropdown -->
+                <!-- Students can only log assessments for their assigned subjects -->
                 <div class="form-group">
                     <label for="subject_id">Subject</label>
                     <select id="subject_id" name="subject_id" required>
@@ -60,31 +62,39 @@
                     </select>
                 </div>
 
+                <!-- Assessment Type Dropdown -->
+                <!-- Assessment types include Test, Exam, and Homework -->
+                <!-- Note: Maximum 3 assessments of each type per subject are allowed -->
                 <div class="form-group">
                     <label for="type">Assessment Type</label>
                     <select id="type" name="type" required>
                         <option value="">-- Select Type --</option>
-                        <option value="Quiz">Quiz</option>
                         <option value="Test">Test</option>
                         <option value="Exam">Exam</option>
-                        <option value="Assignment">Assignment</option>
-                        <option value="Project">Project</option>
                         <option value="Homework">Homework</option>
-                        <option value="Practical">Practical</option>
-                        <option value="Oral">Oral</option>
                     </select>
                 </div>
 
+                <!-- Date Input Field -->
+                <!-- Date must be within the past 2 years and cannot be in the future -->
+                <!-- Client-side and server-side validation ensures data integrity -->
                 <div class="form-group">
                     <label for="date">Date</label>
                     <input type="date" id="date" name="date" required>
+                    <small class="help-text">Date of assessment (within past 2 years)</small>
                 </div>
 
+                <!-- Score Input Field -->
+                <!-- Score must be a percentage between 0 and 100 -->
+                <!-- Decimal values (e.g., 85.5) are supported for more precise grading -->
                 <div class="form-group">
                     <label for="score">Score</label>
-                    <input type="number" id="score" name="score" step="0.01" placeholder="Enter score" required>
+                    <input type="number" id="score" name="score" step="0.01" placeholder="Enter score" max="100" min="0" required>
+                    <small class="help-text">Score percentage (0-100)</small>
                 </div>
 
+                <!-- Form Action Buttons -->
+                <!-- Submit button saves the assessment; Cancel button returns without saving -->
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Log Assessment</button>
                     <a href="{{ url_for('assessments', student_id=student[0]) }}" class="btn btn-secondary">Cancel</a>
@@ -93,4 +103,47 @@
         </section>
 
     </div>
+
+    <script>
+        // Initialize date input restrictions on page load
+        // This ensures users cannot select dates outside the valid range
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.getElementById('date');
+            const today = new Date();
+            
+            // Calculate date 2 years ago to set the minimum allowed date
+            // Students' assessments cannot be older than 2 years
+            const twoYearsAgo = new Date(today);
+            twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+            
+            // Set minimum date to 2 years ago (HTML5 date validation)
+            const minDateString = twoYearsAgo.toISOString().split('T')[0];
+            dateInput.setAttribute('min', minDateString);
+            
+            // Set maximum date to today (cannot log future assessments)
+            const todayString = today.toISOString().split('T')[0];
+            dateInput.setAttribute('max', todayString);
+            
+            // Add form submission validation to catch any client-side date issues
+            // This provides immediate user feedback before server processing
+            document.querySelector('.assessment-form').addEventListener('submit', function(e) {
+                const selectedDate = new Date(dateInput.value);
+                
+                // Check if date is within the valid range (between 2 years ago and today)
+                if (selectedDate < twoYearsAgo) {
+                    // Prevent form submission if date is too old
+                    e.preventDefault();
+                    alert(`Assessment date cannot be before ${minDateString}. Please select a date from the past 2 years.`);
+                    dateInput.focus();
+                    return false;
+                } else if (selectedDate > today) {
+                    // Prevent form submission if date is in the future
+                    e.preventDefault();
+                    alert(`Assessment date cannot be in the future. Please select today or an earlier date.`);
+                    dateInput.focus();
+                    return false;
+                }
+            });
+        });
+    </script>
 {% endblock %}
