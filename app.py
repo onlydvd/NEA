@@ -66,13 +66,12 @@ WITHDRAWAL  = 4  # Student withdrawal/absence
 # They ensure data is correctly mapped to database fields
 
 EXPECTED_HEADERS = [
-    "Firstname","Surname","DOB","Gender","Yeargroup","Mastery","Email", "FirstSubject", "SecondSubject", "ThirdSubject", "FourthSubject",
+    "Firstname","Surname","DOB","Gender","Yeargroup","Mastery","Email",
     "Parentname","Parentnumber","Address","Nationality","CountryofBirth","EnrollmentDate",
     "Conditions","Medication","Allergies","Needs"
 ]
 
-SYSTEM_FIELDS = [
-    "Firstname","Surname","DOB","Gender","Yeargroup","Mastery","Email", "FirstSubject", "SecondSubject", "ThirdSubject", "FourthSubject",
+SYSTEM_FIELDS = ["FirstSubject", "SecondSubject", "ThirdSubject", "FourthSubject",
     "Parentname","Parentnumber","Address","Nationality","CountryOfBirth","EnrollmentDate",
     "Conditions","Medication","Allergies","Needs"
 ]
@@ -315,22 +314,6 @@ def get_db():
 
 
 def count_behaviour(events, type_id):
-    """
-    PURPOSE: Count behaviour events of a specific type
-    
-    ALGORITHM: Linear search through events list
-    - Iterates through all events
-    - Checks if TypeID (index 4) matches target type_id
-    - Increments counter for each match
-    
-    TIME COMPLEXITY: O(n) where n = number of events
-    
-    INPUT:
-    - events: List of behaviour event tuples from database
-    - type_id: Behaviour type to count (e.g., 1=house points, 3=detention)
-    
-    OUTPUT: Integer count of matching events
-    """
     total = 0
     for e in events:
         # BehaviourEvents tuple structure: [0]=EventID, [1]=StudentID, [2]=Date, [3]=Period, [4]=TypeID
@@ -389,24 +372,29 @@ def home():
 # DATABASE: Creates entry in accounts.db (NOT schooldata.db)
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    """Register new teacher account with unique PIN for password reset"""
     session.pop('user', None)  # Ensure user not already logged in
-    conn = sqlite3.connect('accounts.db')
-    cursor = conn.cursor()
+    
+    # Generate PIN only once per session
+    if 'registration_pin' not in session:
+        conn = sqlite3.connect('accounts.db')
+        cursor = conn.cursor()
 
-    all_pins = cursor.execute("SELECT pin FROM users").fetchall()
-    pins = [p[0] for p in all_pins]
-    pin = generate_pin()
-    while pin in pins:
+        all_pins = cursor.execute("SELECT pin FROM users").fetchall()
+        pins = [p[0] for p in all_pins]
         pin = generate_pin()
-
-    conn.close()
+        while pin in pins:
+            pin = generate_pin()
+        
+        session['registration_pin'] = pin
+        conn.close()
+    else:
+        pin = session['registration_pin']
 
 
     if request.method == 'POST':
         email = request.form.get('email').lower().strip()
+        pin = session.get('registration_pin')  # Use the PIN from session
         
-        # Generate a NEW pin for this registration
         conn = sqlite3.connect('accounts.db')
         cursor = conn.cursor()
         
@@ -438,8 +426,8 @@ def register():
                 if not password:
                     flash('Password cannot be empty.')
                     return redirect(url_for('register'))
-                elif len(password) < 6:
-                    flash('Password must be at least 6 characters.')
+                elif len(password) < 8:
+                    flash('Password must be at least 8 characters.')
                     return redirect(url_for('register'))
                 elif password != confirm_password:
                     flash('Passwords do not match. Please try again.')
@@ -531,6 +519,8 @@ def forgot_password():
         # Validate inputs
         if not email or not pin:
             flash('Email and PIN are required.')
+            connection.close()
+            return render_template("forgot_password.html")
         else:
             cursor.execute("SELECT * FROM users WHERE email=?", (email,))
             user_check = cursor.fetchone()
@@ -538,14 +528,18 @@ def forgot_password():
             if user_check:
                 # User exists, now check PIN
                 stored_pin = str(user_check[3]).strip() if user_check[3] else ""
-                if stored_pin == str(pin):
+                if stored_pin == pin.strip():
                     connection.close()
                     session['reset_email'] = email
                     return redirect(url_for('reset_password'))
                 else:
                     flash('Invalid PIN. Please try again.')
+                    connection.close()
+                    return render_template("forgot_password.html")
             else:
                 flash('Invalid email. Please try again.')
+                connection.close()
+                return render_template("forgot_password.html")
     connection.close()
     return render_template("forgot_password.html")
 
@@ -2165,7 +2159,7 @@ def import_students():
 
                     # Unpack row data into individual variables
                     (
-                        firstname, surname, dob, gender, yeargroup, mastery, email, firstsubject, secondsubject, thirdsubject, fourthsubject,
+                        firstname, surname, dob, gender, yeargroup, mastery, email,
                         parentname, parentnumber, address,  nationality, cob, enrolldate,
                         conditions, medication, allergies, needs
                     ) = row
@@ -2191,35 +2185,14 @@ def import_students():
                     medication = medication.title().strip()
                     allergies = allergies.title().strip()
                     needs = needs.title().strip()
-                    
-                    # Convert subject selections to integers or None
-                    try:
-                        firstsubject = int(firstsubject.strip()) if firstsubject.strip() else None
-                    except ValueError:
-                        firstsubject = None
-                    
-                    try:
-                        secondsubject = int(secondsubject.strip()) if secondsubject.strip() else None
-                    except ValueError:
-                        secondsubject = None
-                    
-                    try:
-                        thirdsubject = int(thirdsubject.strip()) if thirdsubject.strip() else None
-                    except ValueError:
-                        thirdsubject = None
-                    
-                    try:
-                        fourthsubject = int(fourthsubject.strip()) if fourthsubject.strip() else None
-                    except ValueError:
-                        fourthsubject = None
 
 
                     # INSERT INTO STUDENTS TABLE - Main student record
                     cursor.execute("""
                         INSERT INTO Students 
-                        (Firstname, Surname, DOB, Gender, Mastery, Yeargroup, Email, FirstSubject, SecondSubject, ThirdSubject, FourthSubject)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """, (firstname, surname, dob, gender, mastery, yeargroup, email, firstsubject, secondsubject, thirdsubject, fourthsubject))
+                        (Firstname, Surname, DOB, Gender, Mastery, Yeargroup, Email)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """, (firstname, surname, dob, gender, mastery, yeargroup, email))
 
                     # Get ID of newly created student (auto-increment primary key)
                     student_id = cursor.lastrowid
@@ -2288,14 +2261,12 @@ def download_student_template():
 
 
 
-# =====================================================================
 # ROUTE: /map_headers (CSV Header Mapping)
 # PURPOSE: When CSV headers don't match template, user maps them manually
 # PROCESS:
 # 1. User selects which system field each CSV column represents
 # 2. Mapping stored in session
 # 3. Redirect to /confirm_mapped_import to process
-# =====================================================================
 @app.route('/map_headers', methods=['GET', 'POST'])
 def map_headers():
     if 'user' not in session:
@@ -2331,12 +2302,10 @@ def map_headers():
 
 
 
-# =====================================================================
 # ROUTE: /confirm_mapped_import (Process Manually Mapped CSV)
 # PURPOSE: Import students using headers mapped by user
 # PROCESS: Applies user's column mappings and imports data
 # DATABASE: Creates Students, Student_Info, Medical_Info, Timetable records
-# =====================================================================
 @app.route('/confirm_mapped_import')
 def confirm_mapped_import():
     if 'user' in session:
