@@ -7,7 +7,6 @@ from flask import Flask, render_template, session, abort, flash, send_from_direc
 from flask import redirect, url_for, request, jsonify, send_from_directory
 import datetime
 from datetime import date, timedelta
-# import matplotlib.pyplot as plt  # Commented out - for future data visualization
 import numpy as np  # Numerical computing
 import pandas as pd  # Data manipulation and analysis
 import sqlite3, csv, os, io  # Database, file handling, and streams
@@ -28,15 +27,6 @@ client = OpenAI(api_key=openai_api_key) if openai_api_key else None
 app = Flask(__name__)  # Create Flask application instance
 app.secret_key = os.getenv('SECRET_KEY', 'StudsightSecretKey123')  # Session encryption key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///forum.db'  # Database configuration
-
-# Email configuration (currently disabled - set up for future use)
-# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-# app.config['MAIL_PORT'] = 587
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'doludavid@gmail.com')
-# app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', 'David12345!')
-# app.config['MAIL_DEFAULT_SENDER'] = 'doludavid15@gmail.com'
-# mail = Mail(app)
 
 
 

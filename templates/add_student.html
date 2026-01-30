@@ -9,9 +9,10 @@
     <script src="{{ url_for('static', filename='add_student.js') }}"></script>
     <script src="{{ url_for('static', filename='date_validation.js') }}"></script>
     <script src="{{ url_for('static', filename='subject_validation.js') }}"></script>
+    <br><br><br><br>
     <div class="menu-bar">
         <div class="back">
-            <a href="#" onclick="history.back()">Back </a>
+            <a href="#" onclick="{{ url_for('students') }}">Back </a>
         </div>
     </div>
 
